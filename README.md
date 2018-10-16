@@ -11,7 +11,7 @@ To see a demonstration of this python demo in action, see
 ### Contents
 
 1. [Demonstrate](#demonstrate)
-    1. [Create docker container](#create-docker-container)
+    1. [Build docker image](#build-docker-image)
     1. [Create SENZING_DIR](#create-senzing_dir)
     1. [Set environment variables for demonstration](#set-environment-variables-for-demonstration)
     1. [Run docker container](#run-docker-container)
@@ -23,11 +23,11 @@ To see a demonstration of this python demo in action, see
 
 ## Demonstrate
 
-### Create docker container
+### Build docker image
 
 This Dockerfile uses `FROM senzing/python-base`.
 If the `senzing/python-base` docker image not available, create it by following instructions at
-[github.com/Senzing/docker-python-base](https://github.com/Senzing/docker-python-base#create-docker-container)
+[github.com/Senzing/docker-python-base](https://github.com/Senzing/docker-python-base#build-docker-image)
 
 ```console
 docker build --tag senzing/python-demo https://github.com/senzing/docker-python-demo.git
