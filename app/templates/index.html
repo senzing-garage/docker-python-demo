@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}Flask example{% endblock %}
+{% block page_title %}Welcome{% endblock %}
+{% block body %}
+
+    <p>This is a minimal web app developed with <a href="http://flask.pocoo.org/">Flask</a> framework.</p>
+    
+    <h3>Senzing version</h3>
+    <pre>{{version}}</pre>
+
+    <h3>Senzing stats</h3>
+    <pre>{{stats}}</pre>    
+
+    <h3>Senzing summary data</h3>
+    <pre>{{summary}}</pre>   
+    
+{% endblock %}
