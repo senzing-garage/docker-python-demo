@@ -53,13 +53,17 @@ def app_root():
     version_dictionary = json.loads(version_string)
     version = json.dumps(version_dictionary, sort_keys=True, indent=4)
 
-    stats_dictionary = g2_module.stats()
-    stats = json.dumps(stats_dictionary, sort_keys=True, indent=4)
+    license_string = g2_product_module.license()
+    license_dictionary = json.loads(license_string)
+    license = json.dumps(license_dictionary, sort_keys=True, indent=4)
+
+    config_dictionary = g2_module.exportConfig()
+    config = json.dumps(config_dictionary, sort_keys=True, indent=4)
 
     summary_dictionary = g2_audit_module.getSummaryData()
     summary = json.dumps(summary_dictionary, sort_keys=True, indent=4)
 
-    return render_template("index.html", version=version, stats=stats, summary=summary)
+    return render_template("index.html", version=version, config=config, summary=summary, license=license)
 
 # -----------------------------------------------------------------------------
 # Main
