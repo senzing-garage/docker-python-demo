@@ -2,7 +2,7 @@ FROM senzing/python-base
 
 # Build-time variables
 
-ARG REFRESHED_AT=2018-10-15
+ENV REFRESHED_AT=2018-10-15
 
 # Perform PIP installs
 
