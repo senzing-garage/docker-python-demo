@@ -6,6 +6,7 @@ GIT_VERSION := $(shell git describe --always --tags --long --dirty | sed -e 's/\
 # Docker variables
 
 DOCKER_IMAGE_TAG ?= $(GIT_REPOSITORY_NAME):$(GIT_VERSION)
+DOCKER_IMAGE_NAME := senzing/python-demo
 
 # -----------------------------------------------------------------------------
 # The first "make" target runs as default.
@@ -19,10 +20,10 @@ default: help
 # -----------------------------------------------------------------------------
 
 .PHONY: docker-build
-docker-build: docker-clean-image
+docker-build: docker-rmi
 	docker build \
-	    --tag senzing/python-demo \
-		--tag senzing/python-demo:$(GIT_VERSION) \
+	    --tag $(DOCKER_IMAGE_NAME) \
+		--tag $(DOCKER_IMAGE_NAME):$(GIT_VERSION) \
 		--tag $(DOCKER_IMAGE_TAG) \
 		.
 
@@ -30,14 +31,14 @@ docker-build: docker-clean-image
 # Clean up targets
 # -----------------------------------------------------------------------------
 
-.PHONY: docker-clean-image
-docker-clean-image:
+.PHONY: docker-rmi
+docker-rmi:
 	-docker rmi --force $(DOCKER_IMAGE_TAG) \
-		senzing/python-demo:$(GIT_VERSION) \
-		senzing/python-demo
+		$(DOCKER_IMAGE_NAME):$(GIT_VERSION) \
+		$(DOCKER_IMAGE_NAME)
 
 .PHONY: clean
-clean: docker-clean-image
+clean: docker-rmi
 
 # -----------------------------------------------------------------------------
 # Help
