@@ -122,7 +122,7 @@ If you do not already have an `/opt/senzing` directory on your local system, her
     ```console
     docker run -it  \
       --volume ${SENZING_DIR}:/opt/senzing \
-      --env SENZING_DATABASE_URL="mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@${MYSQL_HOST}:3306/?schema=${MYSQL_DATABASE}" \
+      --env SENZING_DATABASE_URL="mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@${MYSQL_HOST}:3306/${MYSQL_DATABASE}" \
       senzing/python-base
     ```
 
@@ -144,7 +144,7 @@ If you do not already have an `/opt/senzing` directory on your local system, her
     docker run -it  \
       --volume ${SENZING_DIR}:/opt/senzing \
       --net ${MYSQL_NETWORK} \
-      --env SENZING_DATABASE_URL="mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@${MYSQL_HOST}:3306/?schema=${MYSQL_DATABASE}" \
+      --env SENZING_DATABASE_URL="mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@${MYSQL_HOST}:3306/${MYSQL_DATABASE}" \
       senzing/python-base
     ```
 
