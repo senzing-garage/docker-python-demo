@@ -57,7 +57,8 @@ def app_root():
     license_dictionary = json.loads(license_string)
     license = json.dumps(license_dictionary, sort_keys=True, indent=4)
 
-    config_dictionary = g2_module.exportConfig()
+    config_string = g2_module.exportConfig()
+    config_dictionary = json.loads(config_string)
     config = json.dumps(config_dictionary, sort_keys=True, indent=4)
 
     summary_dictionary = g2_audit_module.getSummaryData()
