@@ -57,9 +57,11 @@ This repository assumes a working knowledge of:
 1. Build demo image.  Example:
 
     ```console
+    export BASE_IMAGE=senzing/python-postgresql-base
+
     sudo docker build \
-      --build-arg 
-      --tag senzing/python-demo \
+      --tag senzing/python-demo \    
+      --build-arg BASE_IMAGE=${BASE_IMAGE} \
       https://github.com/senzing/docker-python-demo.git
     ```
 
