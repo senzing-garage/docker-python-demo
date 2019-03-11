@@ -1,10 +1,14 @@
-FROM senzing/python-base
+ARG BASE_IMAGE=senzing/python-base
+FROM ${BASE_IMAGE}
 
-# Build-time variables
+# Build-time variables.
 
 ENV REFRESHED_AT=2018-10-15
 
-# Perform PIP installs
+LABEL Name="senzing/python-demo" \
+      Version="1.0.0"
+
+# Perform PIP installs.
 
 RUN pip install \
     Flask==1.0.2
@@ -15,13 +19,13 @@ EXPOSE 5000
 
 # Copy the repository's app directory.
 
-COPY ./app /app
+COPY ./rootfs /
 
 # Environment variables for app.
 
 ENV FLASK_APP=/app/app.py
 
-# Run-time command
+# Run-time command.
 
 WORKDIR /app
 CMD ["flask", "run", "--host=0.0.0.0"]
