@@ -3,7 +3,7 @@
 ## Overview
 
 This `senzing/python-demo` docker image demonstrates how to write an app based on the
-[senzing/python-base](https://github.com/Senzing/docker-python-base) docker image.
+[senzing/senzing-base](https://github.com/Senzing/docker-senzing-base) docker image.
 
 To see a demonstration of this python demo in action, see
 [github.com/senzing/docker-compose-mysql-demo](https://github.com/senzing/docker-compose-mysql-demo).
