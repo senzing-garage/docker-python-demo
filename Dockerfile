@@ -1,9 +1,9 @@
-ARG BASE_IMAGE=senzing/python-base
+ARG BASE_IMAGE=senzing/senzing-base
 FROM ${BASE_IMAGE}
 
 # Build-time variables.
 
-ENV REFRESHED_AT=2018-10-15
+ENV REFRESHED_AT=2019-03-22
 
 LABEL Name="senzing/python-demo" \
       Version="1.0.0"
