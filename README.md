@@ -3,7 +3,7 @@
 ## Overview
 
 This `senzing/python-demo` docker image demonstrates how to write an app based on the
-[senzing/python-base](https://github.com/Senzing/docker-python-base) docker image.
+[senzing/senzing-base](https://github.com/Senzing/docker-senzing-base) docker image.
 
 To see a demonstration of this python demo in action, see
 [github.com/senzing/docker-compose-mysql-demo](https://github.com/senzing/docker-compose-mysql-demo).
@@ -132,35 +132,11 @@ This repository assumes a working knowledge of:
 
 ### Prerequisite software
 
-The following software programs need to be installed.
+The following software programs need to be installed:
 
-#### git
-
-1. [Install Git](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-git.md)
-1. Test
-
-    ```console
-    git --version
-    ```
-
-#### make
-
-1. [Install make](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-make.md)
-1. Test
-
-    ```console
-    make --version
-    ```
-
-#### docker
-
-1. [Install docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker.md)
-1. Test
-
-    ```console
-    sudo docker --version
-    sudo docker run hello-world
-    ```
+1. [git](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-git.md)
+1. [make](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-make.md)
+1. [docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker.md)
 
 ### Clone repository
 
