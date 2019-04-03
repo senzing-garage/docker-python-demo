@@ -59,12 +59,19 @@ This repository assumes a working knowledge of:
 
 ### Configuration
 
-- **SENZING_DATABASE_URL** -
+* **SENZING_DATABASE_URL** -
   Database URI in the form: `${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DATABASE}`
-- **SENZING_DEBUG** -
+* **SENZING_DEBUG** -
   Enable debug information. Values: 0=no debug; 1=debug. Default: 0.
-- **SENZING_DIR** -
+* **SENZING_DIR** -
   Location of Senzing libraries. Default: "/opt/senzing".
+* **SENZING_ENTRYPOINT_SLEEP** -
+  Sleep, in seconds, before executing.
+  0 for sleeping infinitely.
+  [not-set] if no sleep.
+  Useful for debugging docker containers.
+  To stop sleeping, run "`unset SENZING_ENTRYPOINT_SLEEP`".
+  Default: [not-set].  
 
 ### Run docker container
 
