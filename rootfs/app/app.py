@@ -1,16 +1,36 @@
 #!/usr/bin/env python
 
 import os
+import signal
 import sys
+import time
 import json
 
 from flask import Flask, render_template
 app = Flask(__name__)
 
-from G2Module import G2Module
-from G2AnonModule import G2AnonModule
-from G2AuditModule import G2AuditModule
-from G2ProductModule import G2ProductModule
+
+def signal_handler(signal, frame):
+    sys.exit(0)
+
+
+signal.signal(signal.SIGTERM, signal_handler)
+signal.signal(signal.SIGINT, signal_handler)
+
+try:
+    from G2Module import G2Module
+    from G2AnonModule import G2AnonModule
+    from G2AuditModule import G2AuditModule
+    from G2ProductModule import G2ProductModule
+except:
+    print("ERROR: Could not import G2Module, G2AnonModule, G2AuditModule, or G2ProductModule")
+    print("Possible causes:")
+    print("    SENZING_DIR not available.")
+    print("    PYTHONPATH environment variable not set correctly.")
+    print("    LD_LIBRARY_PATH environment variable not set correctly.")
+    print("Ctrl-C to exit")
+    time.sleep(3600)
+    sys.exit(0)
 
 # -----------------------------------------------------------------------------
 # Initialization
@@ -73,3 +93,4 @@ def app_root():
 
 if __name__ == '__main__':
     app.run()
+
