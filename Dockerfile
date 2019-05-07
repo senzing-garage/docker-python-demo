@@ -1,14 +1,15 @@
 ARG BASE_IMAGE=senzing/senzing-base
 FROM ${BASE_IMAGE}
 
-# Build-time variables.
-
-ENV REFRESHED_AT=2019-03-22
+ENV REFRESHED_AT=2019-05-01
 
 LABEL Name="senzing/python-demo" \
+      Maintainer="support@senzing.com" \
       Version="1.0.0"
 
-# Perform PIP installs.
+HEALTHCHECK CMD ["/app/healthcheck.sh"]
+
+# Install packages via PIP.
 
 RUN pip install \
     Flask==1.0.2
@@ -17,7 +18,7 @@ RUN pip install \
 
 EXPOSE 5000
 
-# Copy the repository's app directory.
+# Copy files from repository.
 
 COPY ./rootfs /
 
@@ -25,7 +26,7 @@ COPY ./rootfs /
 
 ENV FLASK_APP=/app/app.py
 
-# Run-time command.
+# Runtime execution.
 
 WORKDIR /app
 CMD ["flask", "run", "--host=0.0.0.0"]
