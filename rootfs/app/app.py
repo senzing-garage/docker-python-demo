@@ -18,12 +18,11 @@ signal.signal(signal.SIGTERM, signal_handler)
 signal.signal(signal.SIGINT, signal_handler)
 
 try:
-    from G2Module import G2Module
-    from G2AnonModule import G2AnonModule
-    from G2AuditModule import G2AuditModule
-    from G2ProductModule import G2ProductModule
+    from G2Engine import G2Engine
+    from G2Audit import G2Audit
+    from G2Product import G2Product
 except:
-    print("ERROR: Could not import G2Module, G2AnonModule, G2AuditModule, or G2ProductModule")
+    print("ERROR: Could not import G2Engine, G2Audit, G2Product")
     print("Possible causes:")
     print("    SENZING_DIR not available.")
     print("    PYTHONPATH environment variable not set correctly.")
@@ -36,13 +35,13 @@ except:
 # Initialization
 # -----------------------------------------------------------------------------
 
-debug = False
-
 # Establish directories and paths
 
 senzing_directory = os.environ.get("SENZING_DIR", "/opt/senzing")
 senzing_python_directory = "{0}/g2/python".format(senzing_directory)
 g2module_ini_pathname = "{0}/G2Module.ini".format(senzing_python_directory)
+verbose_logging = False
+config_id = bytearray([])
 
 # Add python directory to System Path
 
@@ -50,14 +49,14 @@ sys.path.append(senzing_python_directory)
 
 # Initialize Senzing G2 modules.
 
-g2_module = G2Module('pyG2', g2module_ini_pathname, debug)
-g2_module.init()
+g2_engine = G2Engine()
+g2_engine.init('pyG2', g2module_ini_pathname, verbose_logging)
 
-g2_audit_module = G2AuditModule('pyG2Audit', g2module_ini_pathname, debug)
-g2_audit_module.init()
+g2_audit = G2Audit()
+g2_audit.init('pyG2Audit', g2module_ini_pathname, verbose_logging)
 
-g2_product_module = G2ProductModule('pyG2Product', g2module_ini_pathname, debug)
-g2_product_module.init()
+g2_product = G2Product()
+g2_product.init('pyG2Product', g2module_ini_pathname, verbose_logging)
 
 # -----------------------------------------------------------------------------
 # @app.routes
@@ -67,22 +66,35 @@ g2_product_module.init()
 @app.route("/")
 def app_root():
 
-    # Pretty print (sort and indent)
+    # Get version.
 
-    version_string = g2_product_module.version()
+    version_string = g2_product.version()
     version_dictionary = json.loads(version_string)
     version = json.dumps(version_dictionary, sort_keys=True, indent=4)
 
-    license_string = g2_product_module.license()
+    # Get license.
+
+    license_string = g2_product.license()
     license_dictionary = json.loads(license_string)
     license = json.dumps(license_dictionary, sort_keys=True, indent=4)
 
-    config_string = g2_module.exportConfig()
+    # Get config.
+
+    config_list = []
+    result = g2_engine.exportConfig(config_list, config_id)
+    config_string = "".join(config_list)
     config_dictionary = json.loads(config_string)
     config = json.dumps(config_dictionary, sort_keys=True, indent=4)
 
-    summary_dictionary = g2_audit_module.getSummaryData()
+    # Get summary.
+
+    summary_list = []
+    result = g2_audit.getSummaryDataDirect(summary_list)
+    summary_string = "".join(summary_list)
+    summary_dictionary = json.loads(summary_string)
     summary = json.dumps(summary_dictionary, sort_keys=True, indent=4)
+
+    # Render template in to HTML page.
 
     return render_template("index.html", version=version, config=config, summary=summary, license=license)
 
