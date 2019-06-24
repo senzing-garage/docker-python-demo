@@ -2,7 +2,8 @@
 
 ## Overview
 
-This `senzing/python-demo` docker image demonstrates how to write an app based on the
+This [senzing/python-demo](https://cloud.docker.com/u/senzing/repository/docker/senzing/python-demo)
+docker image demonstrates how to write an app based on the
 [senzing/senzing-base](https://github.com/Senzing/docker-senzing-base) docker image.
 
 To see a demonstration of this python demo in action, see
@@ -15,7 +16,6 @@ To see a demonstration of this python demo in action, see
     1. [Time](#time)
     1. [Background knowledge](#background-knowledge)
 1. [Demonstrate](#demonstrate)
-    1. [Build docker image](#build-docker-image)
     1. [Create SENZING_DIR](#create-senzing_dir)
     1. [Configuration](#configuration)
     1. [Run docker container](#run-docker-container)
@@ -45,14 +45,6 @@ This repository assumes a working knowledge of:
 
 ## Demonstrate
 
-### Build docker image
-
-1. Using docker command and GitHub.  Example:
-
-    ```console
-    sudo docker build --tag senzing/python-demo https://github.com/senzing/docker-python-demo.git
-    ```
-
 ### Create SENZING_DIR
 
 1. If `/opt/senzing` directory is not on local system, visit
@@ -78,7 +70,7 @@ This repository assumes a working knowledge of:
   [not-set] if no sleep.
   Useful for debugging docker containers.
   To stop sleeping, run "`unset SENZING_ENTRYPOINT_SLEEP`".
-  Default: [not-set].  
+  Default: [not-set].
 
 ### Run docker container
 
