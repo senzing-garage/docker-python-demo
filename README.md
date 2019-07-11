@@ -92,7 +92,7 @@ Run the docker container with internal SQLite database and external volume.
       --rm \
       --tty \
       --volume ${SENZING_DIR}:/opt/senzing \
-      senzing/senzing-base
+      senzing/python-demo
     ```
 
 #### Variation 2
