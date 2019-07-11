@@ -89,6 +89,7 @@ Run the docker container with internal SQLite database and external volume.
     ```console
     sudo docker run \
       --interactive \
+      --publish 5001:5000 \
       --rm \
       --tty \
       --volume ${SENZING_DIR}:/opt/senzing \
