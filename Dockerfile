@@ -1,7 +1,7 @@
 ARG BASE_IMAGE=senzing/senzing-base
 FROM ${BASE_IMAGE}
 
-ENV REFRESHED_AT=2019-05-01
+ENV REFRESHED_AT=2019-07-11
 
 LABEL Name="senzing/python-demo" \
       Maintainer="support@senzing.com" \
@@ -11,7 +11,7 @@ HEALTHCHECK CMD ["/app/healthcheck.sh"]
 
 # Install packages via PIP.
 
-RUN pip install \
+RUN pip3 install \
     Flask==1.0.2
 
 # The port for the Flask is 5000.

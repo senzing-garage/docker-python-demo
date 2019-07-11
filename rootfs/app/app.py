@@ -66,31 +66,29 @@ g2_product.init('pyG2Product', g2module_ini_pathname, verbose_logging)
 @app.route("/")
 def app_root():
 
-    # Get version.
+    # Get version and format it.
 
     version_string = g2_product.version()
     version_dictionary = json.loads(version_string)
     version = json.dumps(version_dictionary, sort_keys=True, indent=4)
 
-    # Get license.
+    # Get license and format it.
 
     license_string = g2_product.license()
     license_dictionary = json.loads(license_string)
     license = json.dumps(license_dictionary, sort_keys=True, indent=4)
 
-    # Get config.
+    # Get config and format it.
 
-    config_list = []
-    result = g2_engine.exportConfig(config_list, config_id)
-    config_string = "".join(config_list)
+    config_string = bytearray()
+    result = g2_engine.exportConfig(config_string, config_id)
     config_dictionary = json.loads(config_string)
     config = json.dumps(config_dictionary, sort_keys=True, indent=4)
 
-    # Get summary.
+    # Get summary and format it.
 
-    summary_list = []
-    result = g2_audit.getSummaryDataDirect(summary_list)
-    summary_string = "".join(summary_list)
+    summary_string = bytearray()
+    result = g2_audit.getSummaryDataDirect(summary_string)
     summary_dictionary = json.loads(summary_string)
     summary = json.dumps(summary_dictionary, sort_keys=True, indent=4)
 
