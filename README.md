@@ -76,7 +76,28 @@ This repository assumes a working knowledge of:
 
 #### Variation 1
 
-Run the docker container with external PostgreSQL database and volumes.
+Run the docker container with internal SQLite database and external volume.
+
+1. :pencil2: Set environment variables.  Example:
+
+    ```console
+    export SENZING_DIR=/opt/senzing
+    ```
+
+1. Run docker container.  Example:
+
+    ```console
+    sudo docker run \
+      --interactive \
+      --rm \
+      --tty \
+      --volume ${SENZING_DIR}:/opt/senzing \
+      senzing/senzing-base
+    ```
+
+#### Variation 2
+
+Run the docker container accessing an external PostgreSQL database and volumes.
 
 1. :pencil2: Set environment variables.  Example:
 
@@ -108,9 +129,9 @@ Run the docker container with external PostgreSQL database and volumes.
       senzing/python-demo
     ```
 
-#### Variation 2
+#### Variation 3
 
-Run the docker container accessing an external PostgreSQL database in a docker network.
+Run the docker container accessing an external MySQL database in a docker network.
 
 1. :pencil2: Determine docker network.  Example:
 
@@ -124,11 +145,11 @@ Run the docker container accessing an external PostgreSQL database in a docker n
 1. :pencil2: Set environment variables.  Example:
 
     ```console
-    export DATABASE_PROTOCOL=postgresql
-    export DATABASE_USERNAME=postgres
-    export DATABASE_PASSWORD=postgres
-    export DATABASE_HOST=senzing-postgresql
-    export DATABASE_PORT=5432
+    export DATABASE_PROTOCOL=mysql
+    export DATABASE_USERNAME=root
+    export DATABASE_PASSWORD=root
+    export DATABASE_HOST=senzing-mysql
+    export DATABASE_PORT=3306
     export DATABASE_DATABASE=G2
 
     export SENZING_DIR=/opt/senzing
