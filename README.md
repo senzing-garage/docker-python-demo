@@ -106,7 +106,7 @@ Run the docker container accessing an external PostgreSQL database and volumes.
     export DATABASE_PROTOCOL=postgresql
     export DATABASE_USERNAME=postgres
     export DATABASE_PASSWORD=postgres
-    export DATABASE_HOST=senzing-postgresql
+    export DATABASE_HOST=senzing-postgresqls
     export DATABASE_PORT=5432
     export DATABASE_DATABASE=G2
     export SENZING_DEBUG=1
