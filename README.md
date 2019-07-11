@@ -47,7 +47,7 @@ This repository assumes a working knowledge of:
 
 ### Create SENZING_DIR
 
-1. If `/opt/senzing` directory is not on local system, visit
+1. If you do not already have an `/opt/senzing` directory on your local system, visit
    [HOWTO - Create SENZING_DIR](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/create-senzing-dir.md).
 
 ### Configuration
@@ -74,9 +74,9 @@ This repository assumes a working knowledge of:
 
 ### Run docker container
 
-#### Demonstration 1
+#### Variation 1
 
-Run the docker container with external database and volumes.
+Run the docker container with external PostgreSQL database and volumes.
 
 1. :pencil2: Set environment variables.  Example:
 
@@ -88,10 +88,11 @@ Run the docker container with external database and volumes.
     export DATABASE_PORT=5432
     export DATABASE_DATABASE=G2
     export SENZING_DEBUG=1
+
     export SENZING_DIR=/opt/senzing
     ```
 
-1. Run the docker container.  Example:
+1. Run docker container.  Example:
 
     ```console
     export SENZING_DATABASE_URL="${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DATABASE}"
@@ -107,9 +108,9 @@ Run the docker container with external database and volumes.
       senzing/python-demo
     ```
 
-#### Demonstration 2
+#### Variation 2
 
-Run the docker container accessing an external database in a docker network.
+Run the docker container accessing an external PostgreSQL database in a docker network.
 
 1. :pencil2: Determine docker network.  Example:
 
@@ -129,10 +130,11 @@ Run the docker container accessing an external database in a docker network.
     export DATABASE_HOST=senzing-postgresql
     export DATABASE_PORT=5432
     export DATABASE_DATABASE=G2
+
     export SENZING_DIR=/opt/senzing
     ```
 
-1. Run the docker container.  Example:
+1. Run docker container.  Example:
 
     ```console
     export SENZING_DATABASE_URL="${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DATABASE}"
