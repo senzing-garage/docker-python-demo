@@ -84,6 +84,8 @@ This repository assumes a working knowledge of:
       senzing/python-demo
     ```
 
+1. The running app is viewable at [localhost:5001](http://localhost:5001).
+
 ## Develop
 
 ### Prerequisite software
