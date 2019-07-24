@@ -52,11 +52,6 @@ This repository assumes a working knowledge of:
 
 ### Configuration
 
-* **SENZING_DATABASE_URL** -
-  Database URI in the form: `${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DATABASE}`.
-  The default is to use the SQLite database.
-* **SENZING_DEBUG** -
-  Enable debug information. Values: 0=no debug; 1=debug. Default: 0.
 * **SENZING_DIR** -
   Path on the local system where
   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
@@ -64,19 +59,12 @@ This repository assumes a working knowledge of:
   See [Create SENZING_DIR](#create-senzing_dir).
   No default.
   Usually set to "/opt/senzing".
-* **SENZING_ENTRYPOINT_SLEEP** -
-  Sleep, in seconds, before executing.
-  0 for sleeping infinitely.
-  [not-set] if no sleep.
-  Useful for debugging docker containers.
-  To stop sleeping, run "`unset SENZING_ENTRYPOINT_SLEEP`".
-  Default: [not-set].
 
 ### Run docker container
 
-#### Variation 1
-
-Run the docker container with internal SQLite database and external volume.
+1. **Important:**
+   Before running `senzing/g2command`,
+   run [senzing/init-container](https://github.com/Senzing/docker-init-container) to initialize the database.
 
 1. :pencil2: Set environment variables.  Example:
 
@@ -89,82 +77,6 @@ Run the docker container with internal SQLite database and external volume.
     ```console
     sudo docker run \
       --interactive \
-      --publish 5001:5000 \
-      --rm \
-      --tty \
-      --volume ${SENZING_DIR}:/opt/senzing \
-      senzing/python-demo
-    ```
-
-#### Variation 2
-
-Run the docker container accessing an external PostgreSQL database and volumes.
-
-1. :pencil2: Set environment variables.  Example:
-
-    ```console
-    export DATABASE_PROTOCOL=postgresql
-    export DATABASE_USERNAME=postgres
-    export DATABASE_PASSWORD=postgres
-    export DATABASE_HOST=senzing-postgresqls
-    export DATABASE_PORT=5432
-    export DATABASE_DATABASE=G2
-    export SENZING_DEBUG=1
-
-    export SENZING_DIR=/opt/senzing
-    ```
-
-1. Run docker container.  Example:
-
-    ```console
-    export SENZING_DATABASE_URL="${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DATABASE}"
-
-    sudo docker run \
-      --env SENZING_DATABASE_URL="${SENZING_DATABASE_URL}" \
-      --env SENZING_DEBUG=${SENZING_DEBUG} \
-      --interactive \
-      --publish 5001:5000 \
-      --rm \
-      --tty \
-      --volume ${SENZING_DIR}:/opt/senzing \
-      senzing/python-demo
-    ```
-
-#### Variation 3
-
-Run the docker container accessing an external MySQL database in a docker network.
-
-1. :pencil2: Determine docker network.  Example:
-
-    ```console
-    sudo docker network ls
-
-    # Choose value from NAME column of docker network ls
-    export SENZING_NETWORK=nameofthe_network
-    ```
-
-1. :pencil2: Set environment variables.  Example:
-
-    ```console
-    export DATABASE_PROTOCOL=mysql
-    export DATABASE_USERNAME=root
-    export DATABASE_PASSWORD=root
-    export DATABASE_HOST=senzing-mysql
-    export DATABASE_PORT=3306
-    export DATABASE_DATABASE=G2
-
-    export SENZING_DIR=/opt/senzing
-    ```
-
-1. Run docker container.  Example:
-
-    ```console
-    export SENZING_DATABASE_URL="${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DATABASE}"
-
-    sudo docker run \
-      --env SENZING_DATABASE_URL="${SENZING_DATABASE_URL}" \
-      --interactive \
-      --net ${SENZING_NETWORK} \
       --publish 5001:5000 \
       --rm \
       --tty \
