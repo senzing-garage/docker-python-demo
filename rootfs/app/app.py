@@ -23,40 +23,59 @@ try:
     from G2Product import G2Product
 except:
     print("ERROR: Could not import G2Engine, G2Audit, G2Product")
-    print("Possible causes:")
-    print("    SENZING_DIR not available.")
-    print("    PYTHONPATH environment variable not set correctly.")
-    print("    LD_LIBRARY_PATH environment variable not set correctly.")
     print("Ctrl-C to exit")
     time.sleep(3600)
     sys.exit(0)
 
 # -----------------------------------------------------------------------------
+# Senzing configuration.
+# -----------------------------------------------------------------------------
+
+
+def get_g2_configuration_dictionary():
+    ''' Construct a dictionary in the form of the old ini files. '''
+    result = {
+        "PIPELINE": {
+            "CONFIGPATH": os.environ.get("SENZING_CONFIG_PATH", "/etc/opt/senzing"),
+            "RESOURCEPATH": os.environ.get("SENZING_RESOURCE_PATH", "/opt/senzing/g2/resources"),
+            "SUPPORTPATH": os.environ.get("SENZING_SUPPORT_PATH", "/opt/senzing/data"),
+        },
+        "SQL": {
+            "CONNECTION": os.environ.get("SENZING_DATABASE_URL", "sqlite3://na:na@/var/opt/senzing/sqlite/G2C.db"),
+        }
+    }
+    return result
+
+
+def get_g2_configuration_json():
+    return json.dumps(get_g2_configuration_dictionary())
+
+# -----------------------------------------------------------------------------
 # Initialization
 # -----------------------------------------------------------------------------
 
-# Establish directories and paths
+# Establish directories and paths.
 
-senzing_directory = os.environ.get("SENZING_DIR", "/opt/senzing")
-senzing_python_directory = "{0}/g2/python".format(senzing_directory)
-g2module_ini_pathname = "{0}/G2Module.ini".format(senzing_python_directory)
+
+g2_configuration_json = get_g2_configuration_json()
+senzing_python_directory = "/opt/senzing/g2/python"
 verbose_logging = False
 config_id = bytearray([])
 
-# Add python directory to System Path
+# Add python directory to System Path.
 
 sys.path.append(senzing_python_directory)
 
 # Initialize Senzing G2 modules.
 
 g2_engine = G2Engine()
-g2_engine.init('pyG2', g2module_ini_pathname, verbose_logging)
+g2_engine.initV2('pyG2', g2_configuration_json, verbose_logging)
 
 g2_audit = G2Audit()
-g2_audit.init('pyG2Audit', g2module_ini_pathname, verbose_logging)
+g2_audit.initV2('pyG2Audit', g2_configuration_json, verbose_logging)
 
 g2_product = G2Product()
-g2_product.init('pyG2Product', g2module_ini_pathname, verbose_logging)
+g2_product.initV2('pyG2Product', g2_configuration_json, verbose_logging)
 
 # -----------------------------------------------------------------------------
 # @app.routes
