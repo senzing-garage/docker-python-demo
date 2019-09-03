@@ -97,6 +97,13 @@ Create a folder for each output directory.
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     ```
 
+1. :thinking: If internal database is used, permissions may need to be changed in `/var/opt/senzing`.
+   Example:
+
+    ```console
+    sudo chmod -R 777 ${SENZING_VAR_DIR}
+    ```
+
 ### Docker network
 
 :thinking: **Optional:**  Use if docker container is part of a docker network.
