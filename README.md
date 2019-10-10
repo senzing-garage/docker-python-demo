@@ -9,6 +9,10 @@ docker image demonstrates how to write an app based on the
 To see a demonstration of this python demo in action, see
 [github.com/senzing/docker-compose-mysql-demo](https://github.com/senzing/docker-compose-mysql-demo).
 
+### Related artifacts
+
+1. [DockerHub](https://hub.docker.com/r/senzing/python-demo)
+
 ### Contents
 
 1. [Expectations](#expectations)
