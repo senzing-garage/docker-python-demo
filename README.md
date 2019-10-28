@@ -248,14 +248,8 @@ The following software programs need to be installed:
     flask run --host=0.0.0.0
     ```
 
-1. Test HTTP API.
-   Note: **GIT_REPOSITORY_DIR** needs to be set.
-   Example:
-
-    ```console
-    curl -X GET \
-      http://localhost:5000/
-    ```
+1. The web page can be seen at
+   [localhost:5000](http://localhost:5000).
 
 ## Develop
 
