@@ -207,6 +207,56 @@ Use if a different userid is required.
 
 1. The running app is viewable at [localhost:5001](http://localhost:5001).
 
+
+## Demonstrate using Command Line
+
+### Prerequisite software
+
+The following software programs need to be installed:
+
+1. [git](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-git.md)
+1. [senzingdata](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-senzing-data.md)
+1. [senzingapi](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-senzing-api.md)
+
+### Clone repository
+
+1. Set these environment variable values:
+
+    ```console
+    export GIT_ACCOUNT=senzing
+    export GIT_REPOSITORY=docker-python-demo
+    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
+    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
+    ```
+
+1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
+
+### Install
+
+1. Install prerequisites:
+    1. [Debian-based installation](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-and-configure-senzing-using-apt.md) - For Ubuntu and [others](https://en.wikipedia.org/wiki/List_of_Linux_distributions#Debian-based)
+    1. [RPM-based installation](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-and-configure-senzing-using-yum.md) - For Red Hat, CentOS, openSuse and [others](https://en.wikipedia.org/wiki/List_of_Linux_distributions#RPM-based).
+
+### Run commands
+
+1. :pencil2: Run command for file input/output.
+   Note: **GIT_REPOSITORY_DIR** needs to be set.
+   Example:
+
+    ```console
+    export ENV FLASK_APP=${GIT_REPOSITORY_DIR}/app/app.py
+    flask run --host=0.0.0.0
+    ```
+
+1. Test HTTP API.
+   Note: **GIT_REPOSITORY_DIR** needs to be set.
+   Example:
+
+    ```console
+    curl -X GET \
+      http://localhost:5000/
+    ```
+
 ## Develop
 
 ### Prerequisite software
