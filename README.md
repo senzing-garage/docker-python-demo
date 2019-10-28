@@ -61,7 +61,7 @@ This repository assumes a working knowledge of:
 ### Initialize Senzing
 
 1. If Senzing has not been initialized, visit
-   [HOWTO - Initialize Senzing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/initialize-senzing.md).
+   "[How to initialize Senzing with Docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/initialize-senzing-with-docker.md)".
 
 ### Configuration
 
