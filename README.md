@@ -27,6 +27,11 @@ To see a demonstration of this python demo in action, see
     1. [External database](#external-database)
     1. [Docker user](#docker-user)
     1. [Run docker container](#run-docker-container)
+1. [Demonstrate using Command Line](#demonstrate-using-command-line)
+    1. [Prerequisite software for command line demonstration](#prerequisite-software-for-command-line-demonstration)
+    1. [Clone repository for command line demonstration](#clone-repository-for-command-line-demonstration)
+    1. [Install](#install)
+    1. [Run commands](#run-commands)
 1. [Develop](#develop)
     1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
@@ -105,7 +110,7 @@ Create a folder for each output directory.
    Example:
 
     ```console
-    sudo chmod -R 777 ${SENZING_VAR_DIR}
+    sudo chown $(id -u):$(id -g) -R ${SENZING_VAR_DIR}
     ```
 
 ### Docker network
@@ -206,6 +211,49 @@ Use if a different userid is required.
     ```
 
 1. The running app is viewable at [localhost:5001](http://localhost:5001).
+
+## Demonstrate using Command Line
+
+### Prerequisite software for command line demonstration
+
+The following software programs need to be installed:
+
+1. [git](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-git.md)
+1. [senzingdata](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-senzing-data.md)
+1. [senzingapi](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-senzing-api.md)
+
+### Clone repository for command line demonstration
+
+1. Set these environment variable values:
+
+    ```console
+    export GIT_ACCOUNT=senzing
+    export GIT_REPOSITORY=docker-python-demo
+    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
+    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
+    ```
+
+1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
+
+### Install
+
+1. Install prerequisites:
+    1. [Debian-based installation](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-and-configure-senzing-using-apt.md) - For Ubuntu and [others](https://en.wikipedia.org/wiki/List_of_Linux_distributions#Debian-based)
+    1. [RPM-based installation](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-and-configure-senzing-using-yum.md) - For Red Hat, CentOS, openSuse and [others](https://en.wikipedia.org/wiki/List_of_Linux_distributions#RPM-based).
+
+### Run commands
+
+1. :pencil2: Run command for file input/output.
+   Note: **GIT_REPOSITORY_DIR** needs to be set.
+   Example:
+
+    ```console
+    export FLASK_APP=${GIT_REPOSITORY_DIR}/rootfs/app/app.py
+    flask run --host=0.0.0.0
+    ```
+
+1. The web page can be seen at
+   [localhost:5000](http://localhost:5000).
 
 ## Develop
 

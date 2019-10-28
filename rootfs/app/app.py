@@ -33,12 +33,20 @@ except:
 
 
 def get_g2_configuration_dictionary():
-    ''' Construct a dictionary in the form of the old ini files. '''
+    ''' Construct a dictionary in the form of the old ini files. '''\
+
+    # Special case: /opt/senzing/data/1.0.0
+
+    senzing_support_path = "/opt/senzing/data"
+    test_data_dir_path = "{0}/1.0.0".format(senzing_support_path)
+    if os.path.exists(test_data_dir_path):
+        senzing_support_path = test_data_dir_path
+
     result = {
         "PIPELINE": {
             "CONFIGPATH": os.environ.get("SENZING_CONFIG_PATH", "/etc/opt/senzing"),
             "RESOURCEPATH": os.environ.get("SENZING_RESOURCE_PATH", "/opt/senzing/g2/resources"),
-            "SUPPORTPATH": os.environ.get("SENZING_SUPPORT_PATH", "/opt/senzing/data"),
+            "SUPPORTPATH": os.environ.get("SENZING_SUPPORT_PATH", senzing_support_path),
         },
         "SQL": {
             "CONNECTION": os.environ.get("SENZING_DATABASE_URL", "sqlite3://na:na@/var/opt/senzing/sqlite/G2C.db"),
