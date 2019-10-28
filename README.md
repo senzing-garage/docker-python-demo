@@ -244,7 +244,7 @@ The following software programs need to be installed:
    Example:
 
     ```console
-    export ENV FLASK_APP=${GIT_REPOSITORY_DIR}/app/app.py
+    export FLASK_APP=${GIT_REPOSITORY_DIR}/rootfs/app/app.py
     flask run --host=0.0.0.0
     ```
 
