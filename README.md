@@ -27,6 +27,11 @@ To see a demonstration of this python demo in action, see
     1. [External database](#external-database)
     1. [Docker user](#docker-user)
     1. [Run docker container](#run-docker-container)
+1. [Demonstrate using Command Line](#demonstrate-using-command-line)
+    1. [Prerequisite software for command line demonstration](#prerequisite-software-for-command-line-demonstration)
+    1. [Clone repository for command line demonstration](#clone-repository-for-command-line-demonstration)
+    1. [Install](#install)
+    1. [Run commands](#run-commands)
 1. [Develop](#develop)
     1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
@@ -207,10 +212,9 @@ Use if a different userid is required.
 
 1. The running app is viewable at [localhost:5001](http://localhost:5001).
 
-
 ## Demonstrate using Command Line
 
-### Prerequisite software
+### Prerequisite software for command line demonstration
 
 The following software programs need to be installed:
 
@@ -218,7 +222,7 @@ The following software programs need to be installed:
 1. [senzingdata](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-senzing-data.md)
 1. [senzingapi](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-senzing-api.md)
 
-### Clone repository
+### Clone repository for command line demonstration
 
 1. Set these environment variable values:
 
