@@ -56,6 +56,28 @@ This repository assumes a working knowledge of:
 
 1. [Docker](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker.md)
 
+## Reconfigure directories
+
+1. Move existing directories.
+   Example:
+
+    ```console
+    sudo mv /opt/senzing/data/1.0.0 /opt/senzing/data-1.0
+    sudo rmdir /opt/senzing/data/
+
+    sudo mv /opt/senzing/g2         /opt/senzing/g2-1.12
+    ```
+
+1. Make SymLinks.
+   Example:
+
+    ```console
+    cd /opt/senzing
+
+    sudo ln -s data-1.0 data
+    sudo ln -s g2-1.12  g2
+    ```
+
 ## Demonstrate using Docker
 
 ### Initialize Senzing
