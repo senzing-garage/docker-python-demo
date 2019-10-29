@@ -249,7 +249,7 @@ The following software programs need to be installed:
 1. Set these environment variable values:
 
     ```console
-    export GIT_ACCOUNT=senzing
+    export GIT_ACCOUNT=docktermj
     export GIT_REPOSITORY=docker-python-demo
     export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
     export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
@@ -295,7 +295,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 1. Set these environment variable values:
 
     ```console
-    export GIT_ACCOUNT=senzing
+    export GIT_ACCOUNT=docktermj
     export GIT_REPOSITORY=docker-python-demo
     export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
     export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
