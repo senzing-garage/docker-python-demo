@@ -299,16 +299,16 @@ The following software programs need to be installed:
    Example:
 
     ```console
-    mkdir --parents ${PROJECT_DIR}/.senzing
-    mkdir --parents ${PROJECT_DIR}/var/sqlite
-    mkdir --parents ${PROJECT_DIR}/etc
+    mkdir --parents ${SENZING_PROJECT_DIR}/.senzing
+    mkdir --parents ${SENZING_PROJECT_DIR}/var/sqlite
+    mkdir --parents ${SENZING_PROJECT_DIR}/etc
     ```
 
 1. Make SymLinks.
    Example:
 
     ```console
-    cd ${PROJECT_DIR}
+    cd ${SENZING_PROJECT_DIR}
 
     ln -s /opt/senzing/data-1.0 data
     ln -s /opt/senzing/g2-1.12 g2
@@ -318,45 +318,46 @@ The following software programs need to be installed:
    Example:
 
     ```console
-    cp ${PROJECT_DIR}/g2/resources/templates/cfgVariant.json.template     ${PROJECT_DIR}/etc/cfgVariant.json
-    cp ${PROJECT_DIR}/g2/resources/templates/customGn.txt.template        ${PROJECT_DIR}/etc/customGn.txt
-    cp ${PROJECT_DIR}/g2/resources/templates/customOn.txt.template        ${PROJECT_DIR}/etc/customOn.txt
-    cp ${PROJECT_DIR}/g2/resources/templates/customSn.txt.template        ${PROJECT_DIR}/etc/customSn.txt
-    cp ${PROJECT_DIR}/g2/resources/templates/defaultGNRCP.config.template ${PROJECT_DIR}/etc/defaultGNRCP.config
-    cp ${PROJECT_DIR}/g2/resources/templates/g2config.json.template       ${PROJECT_DIR}/etc/g2config.json
-    cp ${PROJECT_DIR}/g2/resources/templates/G2Module.ini.template        ${PROJECT_DIR}/etc/G2Module.ini
-    cp ${PROJECT_DIR}/g2/resources/templates/G2Project.ini.template       ${PROJECT_DIR}/etc/G2Project.ini
-    cp ${PROJECT_DIR}/g2/resources/templates/stb.config.template          ${PROJECT_DIR}/etc/stb.config
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/cfgVariant.json.template     ${SENZING_PROJECT_DIR}/etc/cfgVariant.json
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/customGn.txt.template        ${SENZING_PROJECT_DIR}/etc/customGn.txt
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/customOn.txt.template        ${SENZING_PROJECT_DIR}/etc/customOn.txt
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/customSn.txt.template        ${SENZING_PROJECT_DIR}/etc/customSn.txt
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/defaultGNRCP.config.template ${SENZING_PROJECT_DIR}/etc/defaultGNRCP.config
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/g2config.json.template       ${SENZING_PROJECT_DIR}/etc/g2config.json
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/G2Module.ini.template        ${SENZING_PROJECT_DIR}/etc/G2Module.ini
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/G2Project.ini.template       ${SENZING_PROJECT_DIR}/etc/G2Project.ini
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/stb.config.template          ${SENZING_PROJECT_DIR}/etc/stb.config
 
-    cp ${PROJECT_DIR}/g2/resources/templates/G2C.db.template              ${PROJECT_DIR}/var/sqlite/G2C.db
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/G2C.db.template              ${SENZING_PROJECT_DIR}/var/sqlite/G2C.db
     ```
 
 1. Make files.
    Example:
 
     ```console
-    touch  ${PROJECT_DIR}/.senzing/project-history.json
+    touch  ${SENZING_PROJECT_DIR}/.senzing/project-history.json
     ```
 
 1. Make `setupEnv`.
    Example:
 
     ```console
-    cat <<EOT > ${PROJECT_DIR}/setupEnv
+    cat <<EOT > ${SENZING_PROJECT_DIR}/setupEnv
     #!/bin/bash
 
     # Check if we are on a Debian based system, use additional libs
     if [ -f "/etc/debian_version" ]; then
-      export LD_LIBRARY_PATH=${PROJECT_DIR}/g2/lib:${PROJECT_DIR}/g2/lib/debian:$LD_LIBRARY_PATH
+      export LD_LIBRARY_PATH=${SENZING_PROJECT_DIR}/g2/lib:${SENZING_PROJECT_DIR}/g2/lib/debian:$LD_LIBRARY_PATH
     elif [[ "$OSTYPE" == "darwin"* ]]; then
-      export LD_LIBRARY_PATH=${PROJECT_DIR}/g2/lib:${PROJECT_DIR}/g2/lib/macos:$LD_LIBRARY_PATH
-      export DYLD_LIBRARY_PATH=${PROJECT_DIR}/g2/lib:${PROJECT_DIR}/g2/lib/macos:$DYLD_LIBRARY_PATH
+      export LD_LIBRARY_PATH=${SENZING_PROJECT_DIR}/g2/lib:${SENZING_PROJECT_DIR}/g2/lib/macos:$LD_LIBRARY_PATH
+      export DYLD_LIBRARY_PATH=${SENZING_PROJECT_DIR}/g2/lib:${SENZING_PROJECT_DIR}/g2/lib/macos:$DYLD_LIBRARY_PATH
     else
-      export LD_LIBRARY_PATH=${PROJECT_DIR}/g2/lib:$LD_LIBRARY_PATH
+      export LD_LIBRARY_PATH=${SENZING_PROJECT_DIR}/g2/lib:$LD_LIBRARY_PATH
     fi
     EOT
 
-    chmod +x ${PROJECT_DIR}/setupEnv
+    chmod +x ${SENZING_PROJECT_DIR}/setupEnv
+    source ${SENZING_PROJECT_DIR}/setupEnv
     ```
 
 1. Modify files.
@@ -368,15 +369,15 @@ The following software programs need to be installed:
       "etc/G2Project.ini" \
     )
 
-    cd ${PROJECT_DIR}
+    cd ${SENZING_PROJECT_DIR}
 
     for MODIFY_FILE in ${MODIFY_FILES[@]}; \
     do \
       sed -i.$(date +%s) \
-        -e "s:/opt/senzing/data:${PROJECT_DIR}/data:" \
-        -e "s:/opt/senzing/g2/:${PROJECT_DIR}/g2/:" \
-        -e "s:/etc/opt/senzing:${PROJECT_DIR}/etc:" \
-        -e "s:/var/opt/senzing/:${PROJECT_DIR}/var/:" \
+        -e "s:/opt/senzing/data:${SENZING_PROJECT_DIR}/data:" \
+        -e "s:/opt/senzing/g2/:${SENZING_PROJECT_DIR}/g2/:" \
+        -e "s:/etc/opt/senzing:${SENZING_PROJECT_DIR}/etc:" \
+        -e "s:/var/opt/senzing/:${SENZING_PROJECT_DIR}/var/:" \
         ${MODIFY_FILE}; \
     done
     ```
@@ -385,7 +386,7 @@ The following software programs need to be installed:
    Example:
 
     ```console
-    ${PROJECT_DIR}/g2/python/G2SetupConfig.py --iniFile ${PROJECT_DIR}/etc/G2Module.ini
+    ${SENZING_PROJECT_DIR}/g2/python/G2SetupConfig.py --iniFile ${SENZING_PROJECT_DIR}/etc/G2Module.ini
     ```
 
 ### Project using docker
@@ -394,15 +395,25 @@ The following software programs need to be installed:
    Example:
 
     ```console
-    export SENZING_DATA_VERSION_DIR=${PROJECT_DIR}/data
-    export SENZING_ETC_DIR=${PROJECT_DIR}/etc
-    export SENZING_G2_DIR=${PROJECT_DIR}/g2
-    export SENZING_VAR_DIR=${PROJECT_DIR}/var
+    export SENZING_DATA_VERSION_DIR=${SENZING_PROJECT_DIR}/data
+    export SENZING_ETC_DIR=${SENZING_PROJECT_DIR}/etc
+    export SENZING_G2_DIR=${SENZING_PROJECT_DIR}/g2
+    export SENZING_VAR_DIR=${SENZING_PROJECT_DIR}/var
     ```
 
 1. Use "Demonstrate using Docker" starting at [Docker network](#docker-network).
 
 ### Project using command line
+
+1. XXX
+   Example:
+
+    ```console
+
+    export  SENZING_PROJECT_DIR
+    touch  ${SENZING_PROJECT_DIR}/.senzing/project-history.json
+    ```
+
 
 ## Develop
 
