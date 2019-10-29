@@ -410,12 +410,7 @@ The following software programs need to be installed:
 
     ```console
     export FLASK_APP=${SENZING_PROJECT_DIR}/rootfs/app/app.py
-
-    cd ${SENZING_PROJECT_DIR}/rootfs/app
-
-
-
-    touch  ${SENZING_PROJECT_DIR}/.senzing/project-history.json
+    flask run --host=0.0.0.0
     ```
 
 

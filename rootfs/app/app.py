@@ -89,6 +89,8 @@ def get_g2_configuration_json():
 # Add python directory to System Path.
 
 directory_paths = get_directory_paths()
+
+print(directory_paths)
 sys.path.append("{0}/python".format(directory_paths.get('g2Dir')))
 
 # Establish directories and paths.
