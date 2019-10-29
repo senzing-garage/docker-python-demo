@@ -144,6 +144,30 @@ This repository assumes a working knowledge of:
       export LD_LIBRARY_PATH=${PROJECT_DIR}/lib:$LD_LIBRARY_PATH
     fi
     EOT
+
+    chmod +x ${PROJECT_DIR}/setupEnv
+    ```
+
+1. Modify files.
+   Example:
+
+    ```console
+    export MODIFY_FILES( \
+      "etc/G2Module.ini" \
+      "etc/G2Project.ini" \
+    )
+
+    cd ${PROJECT_DIR}
+
+    for MODIFY_FILE in ${MODIFY_FILES[@]}; \
+    do \
+      sed -i.$(date +%s) \
+        -e "s:/opt/senzing/data:${PROJECT_DIR}/data:" \
+        -e "s:/opt/senzing/g2/:${PROJECT_DIR}/g2/:" \
+        -e "s:/etc/opt/senzing:${PROJECT_DIR}/etc:" \
+        -e "s:/var/opt/senzing/:${PROJECT_DIR}/var/:" \
+        ${MODIFY_FILE}; \
+    done
     ```
 
 ## Demonstrate using Docker
