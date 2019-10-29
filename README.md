@@ -171,6 +171,13 @@ This repository assumes a working knowledge of:
     done
     ```
 
+1. Initialize database.
+   Example:
+
+    ```console
+    ${PROJECT_DIR}/g2/python/G2SetupConfig.py --iniFile ${PROJECT_DIR}/etc/G2Module.ini
+    ```
+
 ## Demonstrate using Docker
 
 ### Initialize Senzing
