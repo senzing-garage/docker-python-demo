@@ -415,8 +415,8 @@ The following software programs need to be installed:
 
 #### Project using docker using project mount
 
-1. XXX
-   Example
+1. Run docker container.
+   Example:
 
     ```console
     sudo docker run \
@@ -424,11 +424,14 @@ The following software programs need to be installed:
       ${SENZING_DATABASE_URL_PARAMETER} \
       ${SENZING_NETWORK_PARAMETER} \
       --env SENZING_PROJECT_DIR=/my-project \
+      --env LD_LIBRARY_PATH=/my-project/g2/lib:/my-project/g2/lib/debian \
       --interactive \
       --publish 5001:5000 \
       --rm \
       --tty \
       --volume ${SENZING_PROJECT_DIR}:/my-project \
+      --volume ${SENZING_DATA_VERSION_DIR}:/opt/senzing/data-1.0 \
+      --volume ${SENZING_G2_DIR}:/opt/senzing/g2-1.12 \
       senzing/python-demo
     ```
 
