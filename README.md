@@ -98,6 +98,7 @@ This repository assumes a working knowledge of:
 
 1. Make SymLinks.
    Example:
+
     ```console
     ln -s /opt/senzing/data-1.0 data
     ln -s /opt/senzing/g2-1.12 g2
