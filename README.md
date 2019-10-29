@@ -204,6 +204,13 @@ Use if a different userid is required.
     export SENZING_RUNAS_USER="0"
     ```
 
+   Current user.
+   Example:
+
+    ```console
+    export SENZING_RUNAS_USER=$(id -u)
+    ```
+
 1. Construct parameter for `docker run`.
    Example:
 
