@@ -292,7 +292,7 @@ The following software programs need to be installed:
    Example:
 
     ```console
-    export PROJECT_DIR=~/my-project
+    export SENZING_PROJECT_DIR=${GIT_REPOSITORY_DIR}
     ```
 
 1. Create  directories.
@@ -391,6 +391,16 @@ The following software programs need to be installed:
 
 ### Project using docker
 
+1. Build docker image.
+   Example:
+
+    ```console
+    cd ${SENZING_PROJECT_DIR}
+    sudo make docker-build
+    ```
+
+#### Project using docker using system mounts
+
 1. Identify directories used by docker.
    Example:
 
@@ -402,6 +412,8 @@ The following software programs need to be installed:
     ```
 
 1. Use "Demonstrate using Docker" starting at [Docker network](#docker-network).
+
+#### Project using docker using project mount
 
 ### Project using command line
 
