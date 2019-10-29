@@ -152,7 +152,7 @@ This repository assumes a working knowledge of:
    Example:
 
     ```console
-    export MODIFY_FILES( \
+    export MODIFY_FILES=( \
       "etc/G2Module.ini" \
       "etc/G2Project.ini" \
     )
