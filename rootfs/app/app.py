@@ -17,27 +17,6 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGTERM, signal_handler)
 signal.signal(signal.SIGINT, signal_handler)
 
-
-directory_paths = get_directory_paths()
-
-print(directory_paths)
-sys.path.append("{0}/python".format(directory_paths.get('g2Dir')))
-
-try:
-    from G2Engine import G2Engine
-    from G2Audit import G2Audit
-    from G2Product import G2Product
-except:
-    print("ERROR: Could not import G2Engine, G2Audit, G2Product")
-    print("Ctrl-C to exit")
-    time.sleep(3600)
-    sys.exit(0)
-
-# -----------------------------------------------------------------------------
-# Senzing configuration.
-# -----------------------------------------------------------------------------
-
-
 def get_directory_paths():
 
     project_dir = os.environ.get("SENZING_PROJECT_DIR", None)
@@ -59,6 +38,28 @@ def get_directory_paths():
         "g2Dir": senzing_g2_dir,
         "varDir": senzing_var_dir
     }
+
+directory_paths = get_directory_paths()
+
+print(directory_paths)
+sys.path.append("{0}/python".format(directory_paths.get('g2Dir')))
+
+try:
+    from G2Engine import G2Engine
+    from G2Audit import G2Audit
+    from G2Product import G2Product
+except:
+    print("ERROR: Could not import G2Engine, G2Audit, G2Product")
+    print("Ctrl-C to exit")
+    time.sleep(3600)
+    sys.exit(0)
+
+# -----------------------------------------------------------------------------
+# Senzing configuration.
+# -----------------------------------------------------------------------------
+
+
+
 
 def get_g2_configuration_dictionary():
     ''' Construct a dictionary in the form of the old ini files. '''
