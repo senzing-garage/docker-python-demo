@@ -308,6 +308,8 @@ The following software programs need to be installed:
    Example:
 
     ```console
+    cd ${PROJECT_DIR}
+
     ln -s /opt/senzing/data-1.0 data
     ln -s /opt/senzing/g2-1.12 g2
     ```
