@@ -415,16 +415,32 @@ The following software programs need to be installed:
 
 #### Project using docker using project mount
 
+1. XXX
+   Example
+
+    ```console
+    sudo docker run \
+      ${SENZING_RUNAS_USER_PARAMETER} \
+      ${SENZING_DATABASE_URL_PARAMETER} \
+      ${SENZING_NETWORK_PARAMETER} \
+      --env SENZING_PROJECT_DIR=/my-project \
+      --interactive \
+      --publish 5001:5000 \
+      --rm \
+      --tty \
+      --volume ${SENZING_PROJECT_DIR}:/my-project \
+      senzing/python-demo
+    ```
+
 ### Project using command line
 
-1. XXX
+1. Run Flask.
    Example:
 
     ```console
     export FLASK_APP=${SENZING_PROJECT_DIR}/rootfs/app/app.py
     flask run --host=0.0.0.0
     ```
-
 
 ## Develop
 

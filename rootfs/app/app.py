@@ -45,6 +45,7 @@ def get_directory_paths():
 
 
 directory_paths = get_directory_paths()
+print(directory_paths)
 sys.path.append("{0}/python".format(directory_paths.get('g2Dir')))
 
 # Import Senzing Engine.
