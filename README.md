@@ -400,6 +400,8 @@ The following software programs need to be installed:
 
 1. Use "Demonstrate using Docker" starting at [Docker network](#docker-network).
 
+### Project using command line
+
 ## Develop
 
 ### Prerequisite software
