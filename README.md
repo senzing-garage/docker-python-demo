@@ -196,7 +196,7 @@ Create a folder for each output directory.
 :thinking: **Optional:**  The docker container runs as "USER 1001".
 Use if a different userid is required.
 
-1. :pencil2: Identify user.
+1. :pencil2: Manually identify user.
    User "0" is root.
    Example:
 
@@ -204,7 +204,7 @@ Use if a different userid is required.
     export SENZING_RUNAS_USER="0"
     ```
 
-   Current user.
+   Another option, use current user.
    Example:
 
     ```console
