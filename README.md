@@ -347,12 +347,12 @@ The following software programs need to be installed:
 
     # Check if we are on a Debian based system, use additional libs
     if [ -f "/etc/debian_version" ]; then
-      export LD_LIBRARY_PATH=${PROJECT_DIR}/lib:${PROJECT_DIR}/lib/debian:$LD_LIBRARY_PATH
+      export LD_LIBRARY_PATH=${PROJECT_DIR}/g2/lib:${PROJECT_DIR}/g2/lib/debian:$LD_LIBRARY_PATH
     elif [[ "$OSTYPE" == "darwin"* ]]; then
       export LD_LIBRARY_PATH=${PROJECT_DIR}/g2/lib:${PROJECT_DIR}/g2/lib/macos:$LD_LIBRARY_PATH
       export DYLD_LIBRARY_PATH=${PROJECT_DIR}/g2/lib:${PROJECT_DIR}/g2/lib/macos:$DYLD_LIBRARY_PATH
     else
-      export LD_LIBRARY_PATH=${PROJECT_DIR}/lib:$LD_LIBRARY_PATH
+      export LD_LIBRARY_PATH=${PROJECT_DIR}/g2/lib:$LD_LIBRARY_PATH
     fi
     EOT
 
