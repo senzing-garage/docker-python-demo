@@ -17,7 +17,9 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGTERM, signal_handler)
 signal.signal(signal.SIGINT, signal_handler)
 
+
 def get_directory_paths():
+    ''' Establish paths to dependencies. '''
 
     project_dir = os.environ.get("SENZING_PROJECT_DIR", None)
 
@@ -28,9 +30,9 @@ def get_directory_paths():
         senzing_var_dir = "{0}/var".format(project_dir)
     else:
         senzing_data_dir = os.environ.get("SENZING_DATA_DIR", "/opt/senzing/data")
-        senzing_etc_dir =  os.environ.get("SENZING_ETC_DIR", "/etc/opt/senzing")
-        senzing_g2_dir =  os.environ.get("SENZING_G2_DIR", "/opt/senzing/g2")
-        senzing_var_dir =  os.environ.get("SENZING_VAR_DIR", "/var/opt/senzing")
+        senzing_etc_dir = os.environ.get("SENZING_ETC_DIR", "/etc/opt/senzing")
+        senzing_g2_dir = os.environ.get("SENZING_G2_DIR", "/opt/senzing/g2")
+        senzing_var_dir = os.environ.get("SENZING_VAR_DIR", "/var/opt/senzing")
 
     return {
         "dataDir": senzing_data_dir,
@@ -39,10 +41,13 @@ def get_directory_paths():
         "varDir": senzing_var_dir
     }
 
-directory_paths = get_directory_paths()
+# Add python directory to System Path.
 
-print(directory_paths)
+
+directory_paths = get_directory_paths()
 sys.path.append("{0}/python".format(directory_paths.get('g2Dir')))
+
+# Import Senzing Engine.
 
 try:
     from G2Engine import G2Engine
@@ -59,19 +64,19 @@ except:
 # -----------------------------------------------------------------------------
 
 
-
-
 def get_g2_configuration_dictionary():
     ''' Construct a dictionary in the form of the old ini files. '''
 
     directory_paths = get_directory_paths()
 
-    # Special case: /opt/senzing/data/1.0.0
+    # Special case: Temporary work-around for /opt/senzing/data/1.0.0
 
     senzing_support_path = directory_paths.get('dataDir')
     test_data_dir_path = "{0}/1.0.0".format(senzing_support_path)
     if os.path.exists(test_data_dir_path):
         senzing_support_path = test_data_dir_path
+
+    # Construct configuration dictionary.
 
     result = {
         "PIPELINE": {
@@ -87,20 +92,14 @@ def get_g2_configuration_dictionary():
 
 
 def get_g2_configuration_json():
+    ''' Transform dictionary to JSON string. '''
+
     return json.dumps(get_g2_configuration_dictionary())
 
 # -----------------------------------------------------------------------------
 # Initialization
 # -----------------------------------------------------------------------------
 
-# Add python directory to System Path.
-
-directory_paths = get_directory_paths()
-
-print(directory_paths)
-sys.path.append("{0}/python".format(directory_paths.get('g2Dir')))
-
-# Establish directories and paths.
 
 g2_configuration_json = get_g2_configuration_json()
 verbose_logging = False
@@ -162,4 +161,3 @@ def app_root():
 
 if __name__ == '__main__':
     app.run()
-
