@@ -78,6 +78,74 @@ This repository assumes a working knowledge of:
     sudo ln -s g2-1.12  g2
     ```
 
+## Create project
+
+1. Define project location.
+   Example:
+
+    ```console
+    export PROJECT_DIR=~/my-project
+    ```
+
+1. Create  directories.
+   Example:
+
+    ```console
+    mkdir --parents ${PROJECT_DIR}/.senzing
+    mkdir --parents ${PROJECT_DIR}/var/sqlite
+    mkdir --parents ${PROJECT_DIR}/etc
+    ```
+
+1. Make SymLinks.
+   Example:
+    ```console
+    ln -s /opt/senzing/data-1.0 data
+    ln -s /opt/senzing/g2-1.12 g2
+    ```
+
+1. Copy template files.
+   Example:
+
+    ```console
+    cp ${PROJECT_DIR}/g2/resources/templates/cfgVariant.json.template     ${PROJECT_DIR}/etc/cfgVariant.json
+    cp ${PROJECT_DIR}/g2/resources/templates/customGn.txt.template        ${PROJECT_DIR}/etc/customGn.txt
+    cp ${PROJECT_DIR}/g2/resources/templates/customOn.txt.template        ${PROJECT_DIR}/etc/customOn.txt
+    cp ${PROJECT_DIR}/g2/resources/templates/customSn.txt.template        ${PROJECT_DIR}/etc/customSn.txt
+    cp ${PROJECT_DIR}/g2/resources/templates/defaultGNRCP.config.template ${PROJECT_DIR}/etc/defaultGNRCP.config
+    cp ${PROJECT_DIR}/g2/resources/templates/g2config.json.template       ${PROJECT_DIR}/etc/g2config.json
+    cp ${PROJECT_DIR}/g2/resources/templates/G2Module.ini.template        ${PROJECT_DIR}/etc/G2Module.ini
+    cp ${PROJECT_DIR}/g2/resources/templates/G2Project.ini.template       ${PROJECT_DIR}/etc/G2Project.ini
+    cp ${PROJECT_DIR}/g2/resources/templates/stb.config.template          ${PROJECT_DIR}/etc/stb.config
+
+    cp ${PROJECT_DIR}/g2/resources/templates/G2C.db.template              ${PROJECT_DIR}/var/sqlite/G2C.db
+    ```
+
+1. Make files.
+   Example:
+
+    ```console
+    touch  ${PROJECT_DIR}/.senzing/project-history.json
+    ```
+
+1. Make `setupEnv`.
+   Example:
+
+    ```console
+    cat <<EOT > ${PROJECT_DIR}/setupEnv
+    #!/bin/bash
+
+    # Check if we are on a Debian based system, use additional libs
+    if [ -f "/etc/debian_version" ]; then
+      export LD_LIBRARY_PATH=${PROJECT_DIR}/lib:${PROJECT_DIR}/lib/debian:$LD_LIBRARY_PATH
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+      export LD_LIBRARY_PATH=${PROJECT_DIR}/g2/lib:${PROJECT_DIR}/g2/lib/macos:$LD_LIBRARY_PATH
+      export DYLD_LIBRARY_PATH=${PROJECT_DIR}/g2/lib:${PROJECT_DIR}/g2/lib/macos:$DYLD_LIBRARY_PATH
+    else
+      export LD_LIBRARY_PATH=${PROJECT_DIR}/lib:$LD_LIBRARY_PATH
+    fi
+    EOT
+    ```
+
 ## Demonstrate using Docker
 
 ### Initialize Senzing
