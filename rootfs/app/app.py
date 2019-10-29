@@ -17,6 +17,12 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGTERM, signal_handler)
 signal.signal(signal.SIGINT, signal_handler)
 
+
+directory_paths = get_directory_paths()
+
+print(directory_paths)
+sys.path.append("{0}/python".format(directory_paths.get('g2Dir')))
+
 try:
     from G2Engine import G2Engine
     from G2Audit import G2Audit
