@@ -56,6 +56,28 @@ This repository assumes a working knowledge of:
 
 1. [Docker](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker.md)
 
+## Reconfigure directories
+
+1. Move existing directories.
+   Example:
+
+    ```console
+    sudo mv /opt/senzing/data/1.0.0 /opt/senzing/data-1.0
+    sudo rmdir /opt/senzing/data/
+
+    sudo mv /opt/senzing/g2         /opt/senzing/g2-1.12
+    ```
+
+1. Make SymLinks.
+   Example:
+
+    ```console
+    cd /opt/senzing
+
+    sudo ln -s data-1.0 data
+    sudo ln -s g2-1.12  g2
+    ```
+
 ## Demonstrate using Docker
 
 ### Initialize Senzing
@@ -174,12 +196,19 @@ Create a folder for each output directory.
 :thinking: **Optional:**  The docker container runs as "USER 1001".
 Use if a different userid is required.
 
-1. :pencil2: Identify user.
+1. :pencil2: Manually identify user.
    User "0" is root.
    Example:
 
     ```console
     export SENZING_RUNAS_USER="0"
+    ```
+
+   Another option, use current user.
+   Example:
+
+    ```console
+    export SENZING_RUNAS_USER=$(id -u)
     ```
 
 1. Construct parameter for `docker run`.
@@ -227,7 +256,7 @@ The following software programs need to be installed:
 1. Set these environment variable values:
 
     ```console
-    export GIT_ACCOUNT=senzing
+    export GIT_ACCOUNT=docktermj
     export GIT_REPOSITORY=docker-python-demo
     export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
     export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
@@ -255,6 +284,167 @@ The following software programs need to be installed:
 1. The web page can be seen at
    [localhost:5000](http://localhost:5000).
 
+## Demonstrate as a project
+
+### Create project
+
+1. Define project location.
+   Example:
+
+    ```console
+    export SENZING_PROJECT_DIR=${GIT_REPOSITORY_DIR}
+    ```
+
+1. Create  directories.
+   Example:
+
+    ```console
+    mkdir --parents ${SENZING_PROJECT_DIR}/.senzing
+    mkdir --parents ${SENZING_PROJECT_DIR}/var/sqlite
+    mkdir --parents ${SENZING_PROJECT_DIR}/etc
+    ```
+
+1. Make SymLinks.
+   Example:
+
+    ```console
+    cd ${SENZING_PROJECT_DIR}
+
+    ln -s /opt/senzing/data-1.0 data
+    ln -s /opt/senzing/g2-1.12 g2
+    ```
+
+1. Copy template files.
+   Example:
+
+    ```console
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/cfgVariant.json.template     ${SENZING_PROJECT_DIR}/etc/cfgVariant.json
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/customGn.txt.template        ${SENZING_PROJECT_DIR}/etc/customGn.txt
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/customOn.txt.template        ${SENZING_PROJECT_DIR}/etc/customOn.txt
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/customSn.txt.template        ${SENZING_PROJECT_DIR}/etc/customSn.txt
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/defaultGNRCP.config.template ${SENZING_PROJECT_DIR}/etc/defaultGNRCP.config
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/g2config.json.template       ${SENZING_PROJECT_DIR}/etc/g2config.json
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/G2Module.ini.template        ${SENZING_PROJECT_DIR}/etc/G2Module.ini
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/G2Project.ini.template       ${SENZING_PROJECT_DIR}/etc/G2Project.ini
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/stb.config.template          ${SENZING_PROJECT_DIR}/etc/stb.config
+
+    cp ${SENZING_PROJECT_DIR}/g2/resources/templates/G2C.db.template              ${SENZING_PROJECT_DIR}/var/sqlite/G2C.db
+    ```
+
+1. Make files.
+   Example:
+
+    ```console
+    touch  ${SENZING_PROJECT_DIR}/.senzing/project-history.json
+    ```
+
+1. Make `setupEnv`.
+   Example:
+
+    ```console
+    cat <<EOT > ${SENZING_PROJECT_DIR}/setupEnv
+    #!/bin/bash
+
+    # Check if we are on a Debian based system, use additional libs
+    if [ -f "/etc/debian_version" ]; then
+      export LD_LIBRARY_PATH=${SENZING_PROJECT_DIR}/g2/lib:${SENZING_PROJECT_DIR}/g2/lib/debian:$LD_LIBRARY_PATH
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+      export LD_LIBRARY_PATH=${SENZING_PROJECT_DIR}/g2/lib:${SENZING_PROJECT_DIR}/g2/lib/macos:$LD_LIBRARY_PATH
+      export DYLD_LIBRARY_PATH=${SENZING_PROJECT_DIR}/g2/lib:${SENZING_PROJECT_DIR}/g2/lib/macos:$DYLD_LIBRARY_PATH
+    else
+      export LD_LIBRARY_PATH=${SENZING_PROJECT_DIR}/g2/lib:$LD_LIBRARY_PATH
+    fi
+    EOT
+
+    chmod +x ${SENZING_PROJECT_DIR}/setupEnv
+    source ${SENZING_PROJECT_DIR}/setupEnv
+    ```
+
+1. Modify files.
+   Example:
+
+    ```console
+    export MODIFY_FILES=( \
+      "etc/G2Module.ini" \
+      "etc/G2Project.ini" \
+    )
+
+    cd ${SENZING_PROJECT_DIR}
+
+    for MODIFY_FILE in ${MODIFY_FILES[@]}; \
+    do \
+      sed -i.$(date +%s) \
+        -e "s:/opt/senzing/data:${SENZING_PROJECT_DIR}/data:" \
+        -e "s:/opt/senzing/g2/:${SENZING_PROJECT_DIR}/g2/:" \
+        -e "s:/etc/opt/senzing:${SENZING_PROJECT_DIR}/etc:" \
+        -e "s:/var/opt/senzing/:${SENZING_PROJECT_DIR}/var/:" \
+        ${MODIFY_FILE}; \
+    done
+    ```
+
+1. Initialize database.
+   Example:
+
+    ```console
+    ${SENZING_PROJECT_DIR}/g2/python/G2SetupConfig.py --iniFile ${SENZING_PROJECT_DIR}/etc/G2Module.ini
+    ```
+
+### Project using docker
+
+1. Build docker image.
+   Example:
+
+    ```console
+    cd ${SENZING_PROJECT_DIR}
+    sudo make docker-build
+    ```
+
+#### Project using docker using system mounts
+
+1. Identify directories used by docker.
+   Example:
+
+    ```console
+    export SENZING_DATA_VERSION_DIR=${SENZING_PROJECT_DIR}/data
+    export SENZING_ETC_DIR=${SENZING_PROJECT_DIR}/etc
+    export SENZING_G2_DIR=${SENZING_PROJECT_DIR}/g2
+    export SENZING_VAR_DIR=${SENZING_PROJECT_DIR}/var
+    ```
+
+1. Use "Demonstrate using Docker" starting at [Docker network](#docker-network).
+
+#### Project using docker using project mount
+
+1. Run docker container.
+   Example:
+
+    ```console
+    sudo docker run \
+      ${SENZING_RUNAS_USER_PARAMETER} \
+      ${SENZING_DATABASE_URL_PARAMETER} \
+      ${SENZING_NETWORK_PARAMETER} \
+      --env SENZING_PROJECT_DIR=/my-project \
+      --env LD_LIBRARY_PATH=/my-project/g2/lib:/my-project/g2/lib/debian \
+      --interactive \
+      --publish 5001:5000 \
+      --rm \
+      --tty \
+      --volume ${SENZING_PROJECT_DIR}:/my-project \
+      --volume ${SENZING_DATA_VERSION_DIR}:/opt/senzing/data-1.0 \
+      --volume ${SENZING_G2_DIR}:/opt/senzing/g2-1.12 \
+      senzing/python-demo
+    ```
+
+### Project using command line
+
+1. Run Flask.
+   Example:
+
+    ```console
+    export FLASK_APP=${SENZING_PROJECT_DIR}/rootfs/app/app.py
+    flask run --host=0.0.0.0
+    ```
+
 ## Develop
 
 ### Prerequisite software
@@ -273,7 +463,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 1. Set these environment variable values:
 
     ```console
-    export GIT_ACCOUNT=senzing
+    export GIT_ACCOUNT=docktermj
     export GIT_REPOSITORY=docker-python-demo
     export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
     export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"

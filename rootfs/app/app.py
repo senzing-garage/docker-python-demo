@@ -17,6 +17,39 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGTERM, signal_handler)
 signal.signal(signal.SIGINT, signal_handler)
 
+
+def get_directory_paths():
+    ''' Establish paths to dependencies. '''
+
+    project_dir = os.environ.get("SENZING_PROJECT_DIR", None)
+
+    if project_dir:
+        senzing_data_dir = "{0}/data".format(project_dir)
+        senzing_etc_dir = "{0}/etc".format(project_dir)
+        senzing_g2_dir = "{0}/g2".format(project_dir)
+        senzing_var_dir = "{0}/var".format(project_dir)
+    else:
+        senzing_data_dir = os.environ.get("SENZING_DATA_DIR", "/opt/senzing/data")
+        senzing_etc_dir = os.environ.get("SENZING_ETC_DIR", "/etc/opt/senzing")
+        senzing_g2_dir = os.environ.get("SENZING_G2_DIR", "/opt/senzing/g2")
+        senzing_var_dir = os.environ.get("SENZING_VAR_DIR", "/var/opt/senzing")
+
+    return {
+        "dataDir": senzing_data_dir,
+        "etcDir": senzing_etc_dir,
+        "g2Dir": senzing_g2_dir,
+        "varDir": senzing_var_dir
+    }
+
+# Add python directory to System Path.
+
+
+directory_paths = get_directory_paths()
+print(directory_paths)
+sys.path.append("{0}/python".format(directory_paths.get('g2Dir')))
+
+# Import Senzing Engine.
+
 try:
     from G2Engine import G2Engine
     from G2Audit import G2Audit
@@ -33,46 +66,45 @@ except:
 
 
 def get_g2_configuration_dictionary():
-    ''' Construct a dictionary in the form of the old ini files. '''\
+    ''' Construct a dictionary in the form of the old ini files. '''
 
-    # Special case: /opt/senzing/data/1.0.0
+    directory_paths = get_directory_paths()
 
-    senzing_support_path = "/opt/senzing/data"
+    # Special case: Temporary work-around for /opt/senzing/data/1.0.0
+
+    senzing_support_path = directory_paths.get('dataDir')
     test_data_dir_path = "{0}/1.0.0".format(senzing_support_path)
     if os.path.exists(test_data_dir_path):
         senzing_support_path = test_data_dir_path
 
+    # Construct configuration dictionary.
+
     result = {
         "PIPELINE": {
-            "CONFIGPATH": os.environ.get("SENZING_CONFIG_PATH", "/etc/opt/senzing"),
-            "RESOURCEPATH": os.environ.get("SENZING_RESOURCE_PATH", "/opt/senzing/g2/resources"),
+            "CONFIGPATH": os.environ.get("SENZING_CONFIG_PATH", directory_paths.get('etcDir')),
+            "RESOURCEPATH": os.environ.get("SENZING_RESOURCE_PATH", "{0}/resources".format(directory_paths.get('g2Dir'))),
             "SUPPORTPATH": os.environ.get("SENZING_SUPPORT_PATH", senzing_support_path),
         },
         "SQL": {
-            "CONNECTION": os.environ.get("SENZING_DATABASE_URL", "sqlite3://na:na@/var/opt/senzing/sqlite/G2C.db"),
+            "CONNECTION": os.environ.get("SENZING_DATABASE_URL", "sqlite3://na:na@{0}/sqlite/G2C.db".format(directory_paths.get('varDir'))),
         }
     }
     return result
 
 
 def get_g2_configuration_json():
+    ''' Transform dictionary to JSON string. '''
+
     return json.dumps(get_g2_configuration_dictionary())
 
 # -----------------------------------------------------------------------------
 # Initialization
 # -----------------------------------------------------------------------------
 
-# Establish directories and paths.
-
 
 g2_configuration_json = get_g2_configuration_json()
-senzing_python_directory = "/opt/senzing/g2/python"
 verbose_logging = False
 config_id = bytearray([])
-
-# Add python directory to System Path.
-
-sys.path.append(senzing_python_directory)
 
 # Initialize Senzing G2 modules.
 
@@ -130,4 +162,3 @@ def app_root():
 
 if __name__ == '__main__':
     app.run()
-
