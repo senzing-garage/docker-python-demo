@@ -14,9 +14,9 @@ HEALTHCHECK CMD ["/app/healthcheck.sh"]
 USER root
 
 # Install packages via PIP.
-
+ARG FLASK_VER=1.0.2
 RUN pip3 install \
-    Flask==1.0.2
+    Flask==${FLASK_VER}
 
 # The port for the Flask is 5000.
 
