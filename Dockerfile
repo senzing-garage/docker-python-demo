@@ -1,11 +1,11 @@
-ARG BASE_IMAGE=senzing/senzing-base:1.2.1
+ARG BASE_IMAGE=senzing/senzing-base:1.3.0
 FROM ${BASE_IMAGE}
 
-ENV REFRESHED_AT=2019-09-01
+ENV REFRESHED_AT=2019-11-13
 
 LABEL Name="senzing/python-demo" \
       Maintainer="support@senzing.com" \
-      Version="1.2.0"
+      Version="1.3.0"
 
 HEALTHCHECK CMD ["/app/healthcheck.sh"]
 
@@ -14,6 +14,7 @@ HEALTHCHECK CMD ["/app/healthcheck.sh"]
 USER root
 
 # Install packages via PIP.
+
 ARG FLASK_VER=1.0.2
 RUN pip3 install \
     Flask==${FLASK_VER}
