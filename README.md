@@ -24,8 +24,8 @@ To see a demonstration of this python demo in action, see
     1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [Docker network](#docker-network)
-    1. [External database](#external-database)
     1. [Docker user](#docker-user)
+    1. [External database](#external-database)
     1. [Database support](#database-support)
     1. [Run docker container](#run-docker-container)
 1. [Demonstrate using Command Line](#demonstrate-using-command-line)
@@ -40,6 +40,14 @@ To see a demonstration of this python demo in action, see
 1. [Examples](#examples)
 1. [Errors](#errors)
 1. [References](#references)
+
+### Legend
+
+1. :thinking: - A "thinker" icon means that a little extra thinking may be required.
+   Perhaps you'll need to make some choices.
+   Perhaps it's an optional step.
+1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
+1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
 
 ## Expectations
 
@@ -142,36 +150,6 @@ The following examples show how to identify each output directory.
     export SENZING_NETWORK_PARAMETER="--net ${SENZING_NETWORK}"
     ```
 
-### External database
-
-:thinking: **Optional:**  Use if storing data in an external database.
-
-1. :pencil2: Specify database.
-   Example:
-
-    ```console
-    export DATABASE_PROTOCOL=postgresql
-    export DATABASE_USERNAME=postgres
-    export DATABASE_PASSWORD=postgres
-    export DATABASE_HOST=senzing-postgresql
-    export DATABASE_PORT=5432
-    export DATABASE_DATABASE=G2
-    ```
-
-1. Construct Database URL.
-   Example:
-
-    ```console
-    export SENZING_DATABASE_URL="${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DATABASE}"
-    ```
-
-1. Construct parameter for `docker run`.
-   Example:
-
-    ```console
-    export SENZING_DATABASE_URL_PARAMETER="--env SENZING_DATABASE_URL=${SENZING_DATABASE_URL}
-    ```
-
 ### Docker user
 
 :thinking: **Optional:**  The docker container runs as "USER 1001".
@@ -197,6 +175,37 @@ Use if a different userid (UID) is required.
 
     ```console
     export SENZING_RUNAS_USER_PARAMETER="--user ${SENZING_RUNAS_USER}"
+    ```
+
+### External database
+
+:thinking: **Optional:**  Use if storing data in an external database.
+If not specified, the internal SQLite database will be used.
+
+1. :pencil2: Specify database.
+   Example:
+
+    ```console
+    export DATABASE_PROTOCOL=postgresql
+    export DATABASE_USERNAME=postgres
+    export DATABASE_PASSWORD=postgres
+    export DATABASE_HOST=senzing-postgresql
+    export DATABASE_PORT=5432
+    export DATABASE_DATABASE=G2
+    ```
+
+1. Construct Database URL.
+   Example:
+
+    ```console
+    export SENZING_DATABASE_URL="${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DATABASE}"
+    ```
+
+1. Construct parameter for `docker run`.
+   Example:
+
+    ```console
+    export SENZING_DATABASE_URL_PARAMETER="--env SENZING_DATABASE_URL=${SENZING_DATABASE_URL}"
     ```
 
 ### Database support
