@@ -35,10 +35,10 @@ except:
 def get_g2_configuration_dictionary():
     ''' Construct a dictionary in the form of the old ini files. '''\
 
-    # Special case: /opt/senzing/data/1.0.0
+    # Special case: /opt/senzing/data/2.0.0
 
     senzing_support_path = "/opt/senzing/data"
-    test_data_dir_path = "{0}/1.0.0".format(senzing_support_path)
+    test_data_dir_path = "{0}/2.0.0".format(senzing_support_path)
     if os.path.exists(test_data_dir_path):
         senzing_support_path = test_data_dir_path
 
