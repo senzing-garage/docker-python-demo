@@ -19,7 +19,7 @@ senzing_sdk_version_major = None
 # Import from Senzing.
 
 try:
-    from senzing import G2Audit, G2Engine, G2Product
+    from senzing import G2Engine, G2Product
     senzing_sdk_version_major = 3
 
 except:
@@ -27,7 +27,6 @@ except:
     # Fall back to pre-Senzing-Python-SDK style of imports.
 
     try:
-        from G2Audit import G2Audit
         from G2Engine import G2Engine
         from G2Product import G2Product
         senzing_sdk_version_major = 2
@@ -164,7 +163,12 @@ def app_root():
 
     # Render template in to HTML page.
 
-    return render_template("index.html", version=version, config=config, summary=summary, license=license)
+    return render_template("index.html", version=version, config=config, license=license)
+
+
+@app.route("/bob")
+def app_bob():
+    return "bob!"
 
 # -----------------------------------------------------------------------------
 # Main

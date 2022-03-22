@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=senzing/senzing-base:1.6.5
+ARG BASE_IMAGE=debian:10.11@sha256:94ccfd1c5115a6903cbb415f043a0b04e307be3f37b768cf6d6d3edff0021da3
 
 # -----------------------------------------------------------------------------
 # Stage: Final
@@ -22,6 +22,21 @@ HEALTHCHECK CMD ["/app/healthcheck.sh"]
 
 USER root
 
+# Install packages via apt.
+# Required for msodbcsql17:  libodbc1:amd64 odbcinst odbcinst1debian2:amd64 unixodbc
+
+RUN apt update \
+ && apt -y install \
+      libssl1.1 \
+      odbc-postgresql \
+      odbcinst \
+      python3-dev \
+      python3-pip \
+      sqlite \
+      unixodbc \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
 # Install packages via PIP.
 
 COPY requirements.txt .
@@ -44,6 +59,11 @@ USER 1001
 # Runtime execution.
 
 ENV FLASK_APP=/app/app.py
+ENV LD_LIBRARY_PATH=/opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib
+ENV ODBCSYSINI=/etc/opt/senzing
+ENV PATH=${PATH}:/opt/senzing/g2/python:/opt/IBM/db2/clidriver/adm:/opt/IBM/db2/clidriver/bin
+ENV PYTHONPATH=/opt/senzing/g2/python
+ENV SENZING_ETC_PATH=/etc/opt/senzing
 
 WORKDIR /app
 CMD ["flask", "run", "--host=0.0.0.0"]
