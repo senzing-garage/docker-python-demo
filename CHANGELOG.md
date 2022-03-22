@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.4] - 2022-03-22
+
+### Added to 1.4.4
+
+- Support for enhanced v3 python package styles
+- Support for `libcrypto` and `libssl`
+- Upgrade to senzing/senzing-base:1.6.5
+
 ## [1.4.3] - 2021-10-11
 
 ### Added to 1.4.3

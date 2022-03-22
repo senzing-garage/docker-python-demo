@@ -243,6 +243,67 @@ For other databases, these steps may be skipped.
 
 1. The running app is viewable at [localhost:5001](http://localhost:5001).
 
+## Demonstrate using docker-compose
+
+### Prerequisite docker-compose stack
+
+1. Bring up one of the Senzing docker-compose stacks seen in
+   [docker-compose-demo](https://github.com/Senzing/docker-compose-demo).
+
+### docker-compose database
+
+1. Specify the database connection URL used in the Senzing docker-compose stack.
+   *Note:*  The value will be the same as the `SQL.CONNECTION` value used in the
+   [docker-compose-demo](https://github.com/Senzing/docker-compose-demo) stack.
+   *Warning:* it is not the same as the value of `SENZING_DATABASE_URL`.
+   Example:
+
+    ```console
+    export SENZING_SQL_CONNECTION=postgresql://postgres:postgres@senzing-postgres:5432:G2/
+    ```
+
+### docker-compose volumes
+
+1. :pencil2: Specify the directory containing the Senzing installation.
+   *Note:*  The value will be the same as the `SENZING_VOLUME` value used in the
+   [docker-compose-demo](https://github.com/Senzing/docker-compose-demo) stack.
+   Example:
+
+    ```console
+    export SENZING_VOLUME=~/my-senzing
+    ```
+
+1. Identify the `data_version`, `etc`, `g2`, and `var` directories.
+   Example:
+
+    ```console
+    export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/2.0.0
+    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
+    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
+    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+    ```
+
+### Bring up docker-compose stack
+
+1. Set these environment variable values:
+
+    ```console
+    export GIT_ACCOUNT=senzing
+    export GIT_REPOSITORY=docker-python-demo
+    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
+    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
+    ```
+
+1. Bring up `docker-compose.yaml`.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      --preserve-env \
+      docker-compose up
+    ```
+
 ## Demonstrate using Command Line
 
 ### Prerequisite software for command line demonstration

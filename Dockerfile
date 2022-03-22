@@ -1,11 +1,20 @@
-ARG BASE_IMAGE=senzing/senzing-base:1.6.4
-FROM ${BASE_IMAGE}
+ARG BASE_IMAGE=senzing/senzing-base:1.6.5
 
-ENV REFRESHED_AT=2022-01-06
+# -----------------------------------------------------------------------------
+# Stage: Final
+# -----------------------------------------------------------------------------
+
+# Create the runtime image.
+
+FROM ${BASE_IMAGE} AS runner
+
+ENV REFRESHED_AT=2022-03-22
 
 LABEL Name="senzing/python-demo" \
       Maintainer="support@senzing.com" \
-      Version="1.4.3"
+      Version="1.4.4"
+
+# Define health check.
 
 HEALTHCHECK CMD ["/app/healthcheck.sh"]
 
@@ -15,17 +24,18 @@ USER root
 
 # Install packages via PIP.
 
-ARG FLASK_VER=1.0.2
-RUN pip3 install \
-    Flask==${FLASK_VER}
-
-# The port for the Flask is 5000.
-
-EXPOSE 5000
+COPY requirements.txt .
+RUN pip3 install --upgrade pip \
+ && pip3 install -r requirements.txt \
+ && rm /requirements.txt
 
 # Copy files from repository.
 
 COPY ./rootfs /
+
+# The port for the Flask is 5000.
+
+EXPOSE 5000
 
 # Make non-root container.
 
