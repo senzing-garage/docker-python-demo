@@ -165,11 +165,6 @@ def app_root():
 
     return render_template("index.html", version=version, config=config, license=license)
 
-
-@app.route("/bob")
-def app_bob():
-    return "bob!"
-
 # -----------------------------------------------------------------------------
 # Main
 # -----------------------------------------------------------------------------
