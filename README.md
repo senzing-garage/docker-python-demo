@@ -19,6 +19,11 @@ To see a demonstration of this python demo in action, see
     1. [Space](#space)
     1. [Time](#time)
     1. [Background knowledge](#background-knowledge)
+1. [Demonstrate using Command Line](#demonstrate-using-command-line)
+    1. [Prerequisite software for command line demonstration](#prerequisite-software-for-command-line-demonstration)
+    1. [Clone repository for command line demonstration](#clone-repository-for-command-line-demonstration)
+    1. [Install](#install)
+    1. [Run commands](#run-commands)
 1. [Demonstrate using Docker](#demonstrate-using-docker)
     1. [Initialize Senzing](#initialize-senzing)
     1. [Configuration](#configuration)
@@ -28,11 +33,11 @@ To see a demonstration of this python demo in action, see
     1. [External database](#external-database)
     1. [Database support](#database-support)
     1. [Run docker container](#run-docker-container)
-1. [Demonstrate using Command Line](#demonstrate-using-command-line)
-    1. [Prerequisite software for command line demonstration](#prerequisite-software-for-command-line-demonstration)
-    1. [Clone repository for command line demonstration](#clone-repository-for-command-line-demonstration)
-    1. [Install](#install)
-    1. [Run commands](#run-commands)
+1. [Demonstrate using docker-compose](#demonstrate-using-docker-compose)
+    1. [Prerequisite docker-compose stack](#prerequisite-docker-compose-stack)
+    1. [docker-compose database](#docker-compose-database)
+    1. [docker-compose volumes](#docker-compose-volumes)
+    1. [Bring up docker-compose stack](#bring-up-docker-compose-stack)
 1. [Develop](#develop)
     1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
@@ -65,6 +70,49 @@ This repository assumes a working knowledge of:
 
 1. [Docker](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker.md)
 
+## Demonstrate using Command Line
+
+### Prerequisite software for command line demonstration
+
+The following software programs need to be installed:
+
+1. [git](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-git.md)
+1. [senzingdata](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-senzing-data.md)
+1. [senzingapi](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-senzing-api.md)
+
+### Clone repository for command line demonstration
+
+1. Set these environment variable values:
+
+    ```console
+    export GIT_ACCOUNT=senzing
+    export GIT_REPOSITORY=docker-python-demo
+    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
+    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
+    ```
+
+1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
+
+### Install
+
+1. Install prerequisites:
+    1. [Debian-based installation](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-and-configure-senzing-using-apt.md) - For Ubuntu and [others](https://en.wikipedia.org/wiki/List_of_Linux_distributions#Debian-based)
+    1. [RPM-based installation](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-and-configure-senzing-using-yum.md) - For Red Hat, CentOS, openSuse and [others](https://en.wikipedia.org/wiki/List_of_Linux_distributions#RPM-based).
+
+### Run commands
+
+1. :pencil2: Run command for file input/output.
+   Note: **GIT_REPOSITORY_DIR** needs to be set.
+   Example:
+
+    ```console
+    export FLASK_APP=${GIT_REPOSITORY_DIR}/rootfs/app/app.py
+    flask run --host=0.0.0.0
+    ```
+
+1. The web page can be seen at
+   [localhost:5000](http://localhost:5000).
+
 ## Demonstrate using Docker
 
 ### Initialize Senzing
@@ -93,7 +141,7 @@ Configuration values specified by environment variable or command line parameter
    Example:
 
     ```console
-    export SENZING_VOLUME=/opt/my-senzing
+    export SENZING_VOLUME=~/my-senzing
     ```
 
     1. Here's a simple test to see if `SENZING_VOLUME` is correct.
@@ -226,7 +274,7 @@ For other databases, these steps may be skipped.
     ```console
     sudo docker run \
       --interactive \
-      --publish 5001:5000 \
+      --publish 8356:5000 \
       --rm \
       --tty \
       --volume ${SENZING_DATA_VERSION_DIR}:/opt/senzing/data \
@@ -241,19 +289,49 @@ For other databases, these steps may be skipped.
       senzing/python-demo
     ```
 
-1. The running app is viewable at [localhost:5001](http://localhost:5001).
+1. The running app is viewable at [localhost:8356](http://localhost:8256).
 
-## Demonstrate using Command Line
+## Demonstrate using docker-compose
 
-### Prerequisite software for command line demonstration
+### Prerequisite docker-compose stack
 
-The following software programs need to be installed:
+1. Bring up one of the Senzing docker-compose stacks seen in
+   [docker-compose-demo](https://github.com/Senzing/docker-compose-demo).
 
-1. [git](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-git.md)
-1. [senzingdata](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-senzing-data.md)
-1. [senzingapi](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-senzing-api.md)
+### docker-compose database
 
-### Clone repository for command line demonstration
+1. Specify the database connection URL used in the Senzing docker-compose stack.
+   *Note:*  The value will be the same as the `SQL.CONNECTION` value used in the
+   [docker-compose-demo](https://github.com/Senzing/docker-compose-demo) stack.
+   *Warning:* it is not the same as the value of `SENZING_DATABASE_URL`.
+   Example:
+
+    ```console
+    export SENZING_SQL_CONNECTION=postgresql://postgres:postgres@senzing-postgres:5432:G2/
+    ```
+
+### docker-compose volumes
+
+1. :pencil2: Specify the directory containing the Senzing installation.
+   *Note:*  The value will be the same as the `SENZING_VOLUME` value used in the
+   [docker-compose-demo](https://github.com/Senzing/docker-compose-demo) stack.
+   Example:
+
+    ```console
+    export SENZING_VOLUME=~/my-senzing
+    ```
+
+1. Identify the `data_version`, `etc`, `g2`, and `var` directories.
+   Example:
+
+    ```console
+    export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/2.0.0
+    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
+    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
+    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+    ```
+
+### Bring up docker-compose stack
 
 1. Set these environment variable values:
 
@@ -264,27 +342,15 @@ The following software programs need to be installed:
     export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
     ```
 
-1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
-
-### Install
-
-1. Install prerequisites:
-    1. [Debian-based installation](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-and-configure-senzing-using-apt.md) - For Ubuntu and [others](https://en.wikipedia.org/wiki/List_of_Linux_distributions#Debian-based)
-    1. [RPM-based installation](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-and-configure-senzing-using-yum.md) - For Red Hat, CentOS, openSuse and [others](https://en.wikipedia.org/wiki/List_of_Linux_distributions#RPM-based).
-
-### Run commands
-
-1. :pencil2: Run command for file input/output.
-   Note: **GIT_REPOSITORY_DIR** needs to be set.
+1. Bring up `docker-compose.yaml`.
    Example:
 
     ```console
-    export FLASK_APP=${GIT_REPOSITORY_DIR}/rootfs/app/app.py
-    flask run --host=0.0.0.0
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      --preserve-env \
+      docker-compose up
     ```
-
-1. The web page can be seen at
-   [localhost:5000](http://localhost:5000).
 
 ## Develop
 

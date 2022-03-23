@@ -1,0 +1,27 @@
+version: '3'
+services:
+
+  pythondemo:
+#   command: infinity
+    container_name: senzing-python-demo
+#   entrypoint: sleep
+    environment:
+#     See https://github.com/Senzing/docker-python-demo#configuration
+      SENZING_SQL_CONNECTION: ${SENZING_SQL_CONNECTION}
+    image: senzing/python-demo:${SENZING_DOCKER_IMAGE_VERSION_PYTHON_DEMO:-latest}
+    networks:
+      - senzing
+    ports:
+      - 8256:5000
+    read_only: true
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+
+networks:
+  senzing:
+    external:
+      name: ${SENZING_DOCKER_NETWORK:-senzing-network}

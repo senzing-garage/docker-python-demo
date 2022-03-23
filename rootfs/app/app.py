@@ -1,13 +1,42 @@
 #!/usr/bin/env python3
 
+# Import from standard library. https://docs.python.org/3/library/
+
+import json
 import os
 import signal
 import sys
 import time
-import json
+
+# Import from https://pypi.org/
 
 from flask import Flask, render_template
-app = Flask(__name__)
+
+# Determine "Major" version of Senzing SDK.
+
+senzing_sdk_version_major = None
+
+# Import from Senzing.
+
+try:
+    from senzing import G2Engine, G2Product
+    senzing_sdk_version_major = 3
+
+except:
+
+    # Fall back to pre-Senzing-Python-SDK style of imports.
+
+    try:
+        from G2Engine import G2Engine
+        from G2Product import G2Product
+        senzing_sdk_version_major = 2
+    except:
+        print("ERROR: Could not import G2Engine, G2Audit, G2Product")
+        print("Ctrl-C to exit")
+        time.sleep(3600)
+        sys.exit(0)
+
+# Signal handling.
 
 
 def signal_handler(signal, frame):
@@ -17,15 +46,16 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGTERM, signal_handler)
 signal.signal(signal.SIGINT, signal_handler)
 
-try:
-    from G2Engine import G2Engine
-    from G2Audit import G2Audit
-    from G2Product import G2Product
-except:
-    print("ERROR: Could not import G2Engine, G2Audit, G2Product")
-    print("Ctrl-C to exit")
-    time.sleep(3600)
-    sys.exit(0)
+# Flask application.
+
+app = Flask(__name__)
+
+# Metadata
+
+__all__ = []
+__version__ = "1.4.4"  # See https://www.python.org/dev/peps/pep-0396/
+__date__ = '2018-10-29'
+__updated__ = '2022-03-22'
 
 # -----------------------------------------------------------------------------
 # Senzing configuration.
@@ -38,7 +68,13 @@ def get_g2_configuration_dictionary():
     # Special case: /opt/senzing/data/2.0.0
 
     senzing_support_path = "/opt/senzing/data"
-    test_data_dir_path = "{0}/2.0.0".format(senzing_support_path)
+
+    if senzing_sdk_version_major == 3:
+        string_template = "{0}/3.0.0"
+    else:
+        string_template = "{0}/2.0.0"
+
+    test_data_dir_path = string_template.format(senzing_support_path)
     if os.path.exists(test_data_dir_path):
         senzing_support_path = test_data_dir_path
 
@@ -49,7 +85,7 @@ def get_g2_configuration_dictionary():
             "SUPPORTPATH": os.environ.get("SENZING_SUPPORT_PATH", senzing_support_path),
         },
         "SQL": {
-            "CONNECTION": os.environ.get("SENZING_DATABASE_URL", "sqlite3://na:na@/var/opt/senzing/sqlite/G2C.db"),
+            "CONNECTION": os.environ.get("SENZING_SQL_CONNECTION", "sqlite3://na:na@/var/opt/senzing/sqlite/G2C.db"),
         }
     }
     return result
@@ -74,16 +110,29 @@ config_id = bytearray([])
 
 sys.path.append(senzing_python_directory)
 
-# Initialize Senzing G2 modules.
+# Initialize Senzing G2Engine.
 
 g2_engine = G2Engine()
-g2_engine.initV2('pyG2', g2_configuration_json, verbose_logging)
 
-g2_audit = G2Audit()
-g2_audit.initV2('pyG2Audit', g2_configuration_json, verbose_logging)
+# Backport methods from earlier Senzing versions.
+
+if senzing_sdk_version_major == 2:
+    g2_engine.init = g2_engine.initV2
+    g2_engine.reinit = g2_engine.reinitV2
+    g2_engine.initWithConfigID = g2_engine.initWithConfigIDV2
+
+g2_engine.init('pyG2', g2_configuration_json, verbose_logging)
+
+# Initialize Senzing G2Product.
 
 g2_product = G2Product()
-g2_product.initV2('pyG2Product', g2_configuration_json, verbose_logging)
+
+# Backport methods from earlier Senzing versions.
+
+if senzing_sdk_version_major == 2:
+    g2_product.init = g2_product.initV2
+
+g2_product.init('pyG2Product', g2_configuration_json, verbose_logging)
 
 # -----------------------------------------------------------------------------
 # @app.routes
@@ -112,16 +161,9 @@ def app_root():
     config_dictionary = json.loads(config_string)
     config = json.dumps(config_dictionary, sort_keys=True, indent=4)
 
-    # Get summary and format it.
-
-    summary_string = bytearray()
-    result = g2_audit.getSummaryDataDirect(summary_string)
-    summary_dictionary = json.loads(summary_string)
-    summary = json.dumps(summary_dictionary, sort_keys=True, indent=4)
-
     # Render template in to HTML page.
 
-    return render_template("index.html", version=version, config=config, summary=summary, license=license)
+    return render_template("index.html", version=version, config=config, license=license)
 
 # -----------------------------------------------------------------------------
 # Main
