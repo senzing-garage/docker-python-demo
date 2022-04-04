@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=debian:10.11@sha256:94ccfd1c5115a6903cbb415f043a0b04e307be3f37b768cf6d6d3edff0021da3
+ARG BASE_IMAGE=senzing/senzing-base:1.6.6
 
 # -----------------------------------------------------------------------------
 # Stage: Final
@@ -8,7 +8,7 @@ ARG BASE_IMAGE=debian:10.11@sha256:94ccfd1c5115a6903cbb415f043a0b04e307be3f37b76
 
 FROM ${BASE_IMAGE} AS runner
 
-ENV REFRESHED_AT=2022-03-22
+ENV REFRESHED_AT=2022-04-01
 
 LABEL Name="senzing/python-demo" \
       Maintainer="support@senzing.com" \
