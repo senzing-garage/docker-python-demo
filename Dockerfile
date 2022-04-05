@@ -23,16 +23,15 @@ HEALTHCHECK CMD ["/app/healthcheck.sh"]
 USER root
 
 # Install packages via apt.
-# Required for msodbcsql17:  libodbc1:amd64 odbcinst odbcinst1debian2:amd64 unixodbc
 
-RUN apt update \
- && apt -y install \
+RUN apt-get update \
+ && apt-get -y install \
       libssl1.1 \
       odbc-postgresql \
       odbcinst \
       python3-dev \
       python3-pip \
-      sqlite \
+      sqlite3 \
       unixodbc \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
