@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=debian:10.11@sha256:94ccfd1c5115a6903cbb415f043a0b04e307be3f37b768cf6d6d3edff0021da3
+ARG BASE_IMAGE=debian:11.3-slim@sha256:78fd65998de7a59a001d792fe2d3a6d2ea25b6f3f068e5c84881250373577414
 
 # -----------------------------------------------------------------------------
 # Stage: Final
@@ -8,7 +8,7 @@ ARG BASE_IMAGE=debian:10.11@sha256:94ccfd1c5115a6903cbb415f043a0b04e307be3f37b76
 
 FROM ${BASE_IMAGE} AS runner
 
-ENV REFRESHED_AT=2022-03-22
+ENV REFRESHED_AT=2022-04-01
 
 LABEL Name="senzing/python-demo" \
       Maintainer="support@senzing.com" \
@@ -23,16 +23,15 @@ HEALTHCHECK CMD ["/app/healthcheck.sh"]
 USER root
 
 # Install packages via apt.
-# Required for msodbcsql17:  libodbc1:amd64 odbcinst odbcinst1debian2:amd64 unixodbc
 
-RUN apt update \
- && apt -y install \
+RUN apt-get update \
+ && apt-get -y install \
       libssl1.1 \
       odbc-postgresql \
       odbcinst \
       python3-dev \
       python3-pip \
-      sqlite \
+      sqlite3 \
       unixodbc \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
