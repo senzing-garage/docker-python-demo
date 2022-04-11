@@ -383,7 +383,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 1. **Option #1:** Using `docker` command and GitHub.
 
     ```console
-    sudo docker build --tag senzing/python-demo https://github.com/senzing/docker-python-demo.git
+    sudo docker build --tag senzing/python-demo https://github.com/senzing/docker-python-demo.git#main
     ```
 
 1. **Option #2:** Using `docker` command and local repository.
