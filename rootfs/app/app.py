@@ -65,7 +65,7 @@ __updated__ = '2022-03-22'
 def get_g2_configuration_dictionary():
     ''' Construct a dictionary in the form of the old ini files. '''\
 
-    # Special case: /opt/senzing/data/2.0.0
+    # Special case: /opt/senzing/data/3.0.0
 
     senzing_support_path = "/opt/senzing/data"
 
