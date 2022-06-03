@@ -3,6 +3,7 @@ disable=
     bare-except,
     broad-except,
     consider-using-f-string,
+    import-error,
     invalid-name,
     line-too-long,
     missing-function-docstring,
