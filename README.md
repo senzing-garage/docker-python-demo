@@ -130,6 +130,8 @@ docker image demonstrates how to write a Flask app based on the
     docker-compose -f ${SENZING_VOLUME}/docker-compose.yaml up
     ```
 
+1. The running app is viewable at [localhost:8356](http://localhost:8256).
+
 ## Develop
 
 ### Prerequisite software
