@@ -1,45 +1,28 @@
 #!/usr/bin/env python3
 
+"""
+# Demonstration of calling Senzing.
+"""
+
 # Import from standard library. https://docs.python.org/3/library/
 
 import json
 import os
 import signal
 import sys
-import time
 
 # Import from https://pypi.org/
 
 from flask import Flask, render_template
-
-# Determine "Major" version of Senzing SDK.
-
-senzing_sdk_version_major = None
-
-# Import from Senzing.
-
-try:
-    from senzing import G2Engine, G2Product
-    senzing_sdk_version_major = 3
-
-except:
-
-    # Fall back to pre-Senzing-Python-SDK style of imports.
-
-    try:
-        from G2Engine import G2Engine
-        from G2Product import G2Product
-        senzing_sdk_version_major = 2
-    except:
-        print("ERROR: Could not import G2Engine, G2Audit, G2Product")
-        print("Ctrl-C to exit")
-        time.sleep(3600)
-        sys.exit(0)
+from senzing import G2Engine, G2Product
 
 # Signal handling.
 
 
-def signal_handler(signal, frame):
+def signal_handler(the_signal, frame):
+    ''' Exit. '''
+    print(f'Signal: {the_signal}')
+    print(f'Frame: {frame}')
     sys.exit(0)
 
 
@@ -48,14 +31,14 @@ signal.signal(signal.SIGINT, signal_handler)
 
 # Flask application.
 
-app = Flask(__name__)
+APP = Flask(__name__)
 
 # Metadata
 
 __all__ = []
-__version__ = "1.4.4"  # See https://www.python.org/dev/peps/pep-0396/
+__version__ = "1.5.0"  # See https://www.python.org/dev/peps/pep-0396/
 __date__ = '2018-10-29'
-__updated__ = '2022-03-22'
+__updated__ = '2022-09-07'
 
 # -----------------------------------------------------------------------------
 # Senzing configuration.
@@ -65,24 +48,11 @@ __updated__ = '2022-03-22'
 def get_g2_configuration_dictionary():
     ''' Construct a dictionary in the form of the old ini files. '''\
 
-    # Special case: /opt/senzing/data/3.0.0
-
-    senzing_support_path = "/opt/senzing/data"
-
-    if senzing_sdk_version_major == 3:
-        string_template = "{0}/3.0.0"
-    else:
-        string_template = "{0}/2.0.0"
-
-    test_data_dir_path = string_template.format(senzing_support_path)
-    if os.path.exists(test_data_dir_path):
-        senzing_support_path = test_data_dir_path
-
     result = {
         "PIPELINE": {
             "CONFIGPATH": os.environ.get("SENZING_CONFIG_PATH", "/etc/opt/senzing"),
             "RESOURCEPATH": os.environ.get("SENZING_RESOURCE_PATH", "/opt/senzing/g2/resources"),
-            "SUPPORTPATH": os.environ.get("SENZING_SUPPORT_PATH", senzing_support_path),
+            "SUPPORTPATH": os.environ.get("SENZING_SUPPORT_PATH", "/opt/senzing/data"),
         },
         "SQL": {
             "CONNECTION": os.environ.get("SENZING_SQL_CONNECTION", "sqlite3://na:na@/var/opt/senzing/sqlite/G2C.db"),
@@ -92,6 +62,7 @@ def get_g2_configuration_dictionary():
 
 
 def get_g2_configuration_json():
+    ''' Return a JSON string of Senzing Engine configuration. '''
     return json.dumps(get_g2_configuration_dictionary())
 
 # -----------------------------------------------------------------------------
@@ -101,69 +72,51 @@ def get_g2_configuration_json():
 # Establish directories and paths.
 
 
-g2_configuration_json = get_g2_configuration_json()
-senzing_python_directory = "/opt/senzing/g2/python"
-verbose_logging = False
-config_id = bytearray([])
-
-# Add python directory to System Path.
-
-sys.path.append(senzing_python_directory)
+G2_CONFIGURATION_JSON = get_g2_configuration_json()
+VERBOSE_LOGGING = False
+CONFIG_ID = bytearray([])
 
 # Initialize Senzing G2Engine.
 
-g2_engine = G2Engine()
-
-# Backport methods from earlier Senzing versions.
-
-if senzing_sdk_version_major == 2:
-    g2_engine.init = g2_engine.initV2
-    g2_engine.reinit = g2_engine.reinitV2
-    g2_engine.initWithConfigID = g2_engine.initWithConfigIDV2
-
-g2_engine.init('pyG2', g2_configuration_json, verbose_logging)
+G2_ENGINE = G2Engine()
+G2_ENGINE.init('pyG2', G2_CONFIGURATION_JSON, VERBOSE_LOGGING)
 
 # Initialize Senzing G2Product.
 
-g2_product = G2Product()
-
-# Backport methods from earlier Senzing versions.
-
-if senzing_sdk_version_major == 2:
-    g2_product.init = g2_product.initV2
-
-g2_product.init('pyG2Product', g2_configuration_json, verbose_logging)
+G2_PRODUCT = G2Product()
+G2_PRODUCT.init('pyG2Product', G2_CONFIGURATION_JSON, VERBOSE_LOGGING)
 
 # -----------------------------------------------------------------------------
-# @app.routes
+# @APP.routes
 # -----------------------------------------------------------------------------
 
 
-@app.route("/")
+@APP.route("/")
 def app_root():
+    ''' Handle / path. '''
 
     # Get version and format it.
 
-    version_string = g2_product.version()
+    version_string = G2_PRODUCT.version()
     version_dictionary = json.loads(version_string)
     version = json.dumps(version_dictionary, sort_keys=True, indent=4)
 
     # Get license and format it.
 
-    license_string = g2_product.license()
+    license_string = G2_PRODUCT.license()
     license_dictionary = json.loads(license_string)
-    license = json.dumps(license_dictionary, sort_keys=True, indent=4)
+    license_pretty_string = json.dumps(license_dictionary, sort_keys=True, indent=4)
 
     # Get config and format it.
 
     config_string = bytearray()
-    result = g2_engine.exportConfig(config_string, config_id)
+    G2_ENGINE.exportConfig(config_string, CONFIG_ID)
     config_dictionary = json.loads(config_string)
     config = json.dumps(config_dictionary, sort_keys=True, indent=4)
 
     # Render template in to HTML page.
 
-    return render_template("index.html", version=version, config=config, license=license)
+    return render_template("index.html", version=version, config=config, license=license_pretty_string)
 
 # -----------------------------------------------------------------------------
 # Main
@@ -171,5 +124,4 @@ def app_root():
 
 
 if __name__ == '__main__':
-    app.run()
-
+    APP.run()

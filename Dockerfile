@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=debian:11.4-slim@sha256:68c1f6bae105595d2ebec1589d9d476ba2939fdb11eaba1daec4ea826635ce75
+ARG BASE_IMAGE=senzing/senzingapi-runtime:3.2.0
 
 # -----------------------------------------------------------------------------
 # Stage: Final
@@ -6,13 +6,13 @@ ARG BASE_IMAGE=debian:11.4-slim@sha256:68c1f6bae105595d2ebec1589d9d476ba2939fdb1
 
 # Create the runtime image.
 
-FROM ${BASE_IMAGE} AS runner
+FROM ${BASE_IMAGE}
 
-ENV REFRESHED_AT=2022-08-25
+ENV REFRESHED_AT=2022-09-07
 
 LABEL Name="senzing/python-demo" \
       Maintainer="support@senzing.com" \
-      Version="1.4.4"
+      Version="1.5.0"
 
 # Define health check.
 
@@ -33,7 +33,6 @@ RUN apt-get update \
       python3-pip \
       sqlite3 \
       unixodbc \
- && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
 # Install packages via PIP.
@@ -61,7 +60,7 @@ ENV FLASK_APP=/app/app.py
 ENV LD_LIBRARY_PATH=/opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib
 ENV ODBCSYSINI=/etc/opt/senzing
 ENV PATH=${PATH}:/opt/senzing/g2/python:/opt/IBM/db2/clidriver/adm:/opt/IBM/db2/clidriver/bin
-ENV PYTHONPATH=/opt/senzing/g2/python
+ENV PYTHONPATH=/opt/senzing/g2/sdk/python
 ENV SENZING_ETC_PATH=/etc/opt/senzing
 
 WORKDIR /app
