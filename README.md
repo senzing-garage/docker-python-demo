@@ -15,28 +15,13 @@ To see a demonstration of this python demo in action, see
 
 ### Contents
 
-1. [Expectations](#expectations)
-    1. [Space](#space)
-    1. [Time](#time)
-    1. [Background knowledge](#background-knowledge)
-1. [Demonstrate using Command Line](#demonstrate-using-command-line)
-    1. [Prerequisite software for command line demonstration](#prerequisite-software-for-command-line-demonstration)
-    1. [Clone repository for command line demonstration](#clone-repository-for-command-line-demonstration)
-    1. [Install](#install)
-    1. [Run commands](#run-commands)
 1. [Demonstrate using Docker](#demonstrate-using-docker)
-    1. [Initialize Senzing](#initialize-senzing)
     1. [Configuration](#configuration)
-    1. [Volumes](#volumes)
-    1. [Docker network](#docker-network)
-    1. [Docker user](#docker-user)
     1. [External database](#external-database)
     1. [Database support](#database-support)
     1. [Run docker container](#run-docker-container)
 1. [Demonstrate using docker-compose](#demonstrate-using-docker-compose)
     1. [Prerequisite docker-compose stack](#prerequisite-docker-compose-stack)
-    1. [docker-compose database](#docker-compose-database)
-    1. [docker-compose volumes](#docker-compose-volumes)
     1. [Bring up docker-compose stack](#bring-up-docker-compose-stack)
 1. [Develop](#develop)
     1. [Prerequisite software](#prerequisite-software)
@@ -56,172 +41,12 @@ To see a demonstration of this python demo in action, see
 
 ## Expectations
 
-### Space
-
-This repository and demonstration require 6 GB free disk space.
-
-### Time
-
-Budget 40 minutes to get the demonstration up-and-running, depending on CPU and network speeds.
-
-### Background knowledge
-
-This repository assumes a working knowledge of:
-
-1. [Docker](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/docker.md)
-
-## Demonstrate using Command Line
-
-### Prerequisite software for command line demonstration
-
-The following software programs need to be installed:
-
-1. [git](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-git.md)
-1. [senzingdata](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-senzing-data.md)
-1. [senzingapi](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-senzing-api.md)
-
-### Clone repository for command line demonstration
-
-1. Set these environment variable values:
-
-    ```console
-    export GIT_ACCOUNT=senzing
-    export GIT_REPOSITORY=docker-python-demo
-    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
-    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
-    ```
-
-1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/clone-repository.md) to install the Git repository.
-
-### Install
-
-1. Install prerequisites:
-    1. [Debian-based installation](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-and-configure-senzing-using-apt.md) - For Ubuntu and [others](https://en.wikipedia.org/wiki/List_of_Linux_distributions#Debian-based)
-    1. [RPM-based installation](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-and-configure-senzing-using-yum.md) - For Red Hat, CentOS, openSuse and [others](https://en.wikipedia.org/wiki/List_of_Linux_distributions#RPM-based).
-
-### Run commands
-
-1. :pencil2: Run command for file input/output.
-   Note: **GIT_REPOSITORY_DIR** needs to be set.
-   Example:
-
-    ```console
-    export FLASK_APP=${GIT_REPOSITORY_DIR}/rootfs/app/app.py
-    flask run --host=0.0.0.0
-    ```
-
-1. The web page can be seen at
-   [localhost:5000](http://localhost:5000).
+- **Space:** This repository and demonstration require 6 GB free disk space.
+- **Time:** Budget 40 minutes to get the demonstration up-and-running, depending on CPU and network speeds.
+- **Background knowledge:** This repository assumes a working knowledge of:
+  - [Docker](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/docker.md)
 
 ## Demonstrate using Docker
-
-### Initialize Senzing
-
-1. If Senzing has not been initialized, visit
-   "[How to initialize Senzing with Docker](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/initialize-senzing-with-docker.md)".
-
-### Configuration
-
-Configuration values specified by environment variable or command line parameter.
-
-- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_data_version_dir)**
-- **[SENZING_DATABASE_URL](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_database_url)**
-- **[SENZING_DEBUG](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_debug)**
-- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_etc_dir)**
-- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_g2_dir)**
-- **[SENZING_NETWORK](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_network)**
-- **[SENZING_RUNAS_USER](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_runas_user)**
-- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_var_dir)**
-
-### Volumes
-
-1. :pencil2: Specify the directory containing the Senzing installation.
-   Use the same `SENZING_VOLUME` value used when performing
-   "[How to initialize Senzing with Docker](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/initialize-senzing-with-docker.md)".
-   Example:
-
-    ```console
-    export SENZING_VOLUME=~/my-senzing
-    ```
-
-    1. Here's a simple test to see if `SENZING_VOLUME` is correct.
-       The following commands should return file contents.
-       Example:
-
-        ```console
-        cat ${SENZING_VOLUME}/g2/g2BuildVersion.json
-        cat ${SENZING_VOLUME}/data/3.0.0/libpostal/data_version
-        ```
-
-    1. :warning:
-       **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#macos)
-       must be enabled for `SENZING_VOLUME`.
-    1. :warning:
-       **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#windows)
-       must be enabled for `SENZING_VOLUME`.
-
-1. Identify the `data_version`, `etc`, `g2`, and `var` directories.
-   Example:
-
-    ```console
-    export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/3.0.0
-    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
-    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
-    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
-    ```
-
-### Docker network
-
-:thinking: **Optional:**  Use if docker container is part of a docker network.
-
-1. List docker networks.
-   Example:
-
-    ```console
-    sudo docker network ls
-    ```
-
-1. :pencil2: Specify docker network.
-   Choose value from NAME column of `docker network ls`.
-   Example:
-
-    ```console
-    export SENZING_NETWORK=*nameofthe_network*
-    ```
-
-1. Construct parameter for `docker run`.
-   Example:
-
-    ```console
-    export SENZING_NETWORK_PARAMETER="--net ${SENZING_NETWORK}"
-    ```
-
-### Docker user
-
-:thinking: **Optional:**  The docker container runs as "USER 1001".
-Use if a different userid (UID) is required.
-
-1. :pencil2: Manually identify user.
-   User "0" is root.
-   Example:
-
-    ```console
-    export SENZING_RUNAS_USER="0"
-    ```
-
-   Another option, use current user.
-   Example:
-
-    ```console
-    export SENZING_RUNAS_USER=$(id -u)
-    ```
-
-1. Construct parameter for `docker run`.
-   Example:
-
-    ```console
-    export SENZING_RUNAS_USER_PARAMETER="--user ${SENZING_RUNAS_USER}"
-    ```
 
 ### External database
 
@@ -277,15 +102,7 @@ For other databases, these steps may be skipped.
       --publish 8356:5000 \
       --rm \
       --tty \
-      --volume ${SENZING_DATA_VERSION_DIR}:/opt/senzing/data \
-      --volume ${SENZING_ETC_DIR}:/etc/opt/senzing \
-      --volume ${SENZING_G2_DIR}:/opt/senzing/g2 \
-      --volume ${SENZING_VAR_DIR}:/var/opt/senzing \
-      ${SENZING_RUNAS_USER_PARAMETER} \
       ${SENZING_DATABASE_URL_PARAMETER} \
-      ${SENZING_NETWORK_PARAMETER} \
-      ${SENZING_OPT_IBM_DIR_PARAMETER} \
-      ${SENZING_OPT_MICROSOFT_DIR_PARAMETER} \
       senzing/python-demo
     ```
 
@@ -293,63 +110,54 @@ For other databases, these steps may be skipped.
 
 ## Demonstrate using docker-compose
 
-### Prerequisite docker-compose stack
+### Create directories for artifacts
 
-1. Bring up one of the Senzing docker-compose stacks seen in
-   [docker-compose-demo](https://github.com/Senzing/docker-compose-demo).
-
-### docker-compose database
-
-1. Specify the database connection URL used in the Senzing docker-compose stack.
-   *Note:*  The value will be the same as the `SQL.CONNECTION` value used in the
-   [docker-compose-demo](https://github.com/Senzing/docker-compose-demo) stack.
-   *Warning:* it is not the same as the value of `SENZING_DATABASE_URL`.
-   Example:
-
-    ```console
-    export SENZING_SQL_CONNECTION=postgresql://postgres:postgres@senzing-postgres:5432:G2/
-    ```
-
-### docker-compose volumes
-
-1. :pencil2: Specify the directory containing the Senzing installation.
-   *Note:*  The value will be the same as the `SENZING_VOLUME` value used in the
-   [docker-compose-demo](https://github.com/Senzing/docker-compose-demo) stack.
+1. Specify a new directory to place artifacts in.
    Example:
 
     ```console
     export SENZING_VOLUME=~/my-senzing
     ```
 
-1. Identify the `data_version`, `etc`, `g2`, and `var` directories.
+1. Create directories.
    Example:
 
     ```console
-    export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/3.0.0
-    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
-    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
-    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+    export PGADMIN_DIR=${SENZING_VOLUME}/pgadmin
+    export POSTGRES_DIR=${SENZING_VOLUME}/postgres
+    export RABBITMQ_DIR=${SENZING_VOLUME}/rabbitmq
+    export SENZING_UID=$(id -u)
+    export SENZING_GID=$(id -g)
+    mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
+    chmod -R 777 ${SENZING_VOLUME}
+
+    ```
+
+### Prerequisite docker-compose stack
+
+1. Bring up a Docker Compose stack with backing services.
+   Example:
+
+    ```console
+    wget -O ${SENZING_VOLUME}/docker-compose-backing-services-only.yaml \
+      "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/postgresql/docker-compose-rabbitmq-postgresql-backing-services-only.yaml"
+
+    docker-compose -f ${SENZING_VOLUME}/docker-compose-backing-services-only.yaml pull
+    docker-compose -f ${SENZING_VOLUME}/docker-compose-backing-services-only.yaml up
+
     ```
 
 ### Bring up docker-compose stack
 
-1. Set these environment variable values:
-
-    ```console
-    export GIT_ACCOUNT=senzing
-    export GIT_REPOSITORY=docker-python-demo
-    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
-    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
-    ```
-
-1. Bring up `docker-compose.yaml`.
+1. Download `docker-compose.yaml` file and deploy stack.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      --preserve-env \
-      docker-compose up
+    wget -O ${SENZING_VOLUME}/docker-compose.yaml \
+      "https://raw.githubusercontent.com/Senzing/docker-python-demo/main/docker-compose.yaml"
+
+    docker-compose -f ${SENZING_VOLUME}/docker-compose.yaml pull
+    docker-compose -f ${SENZING_VOLUME}/docker-compose.yaml up
     ```
 
 ## Develop
@@ -403,6 +211,17 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/main/
     Note: `sudo make docker-build-development-cache` can be used to create cached docker layers.
 
 ## Examples
+
+## Advanced
+
+### Configuration
+
+Configuration values specified by environment variable or command line parameter.
+
+- **[SENZING_DATABASE_URL](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_database_url)**
+- **[SENZING_DEBUG](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_debug)**
+- **[SENZING_NETWORK](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_network)**
+- **[SENZING_RUNAS_USER](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_runas_user)**
 
 ## Errors
 
