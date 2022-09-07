@@ -18,7 +18,7 @@ docker image demonstrates how to write a Flask app based on the
     1. [Set environment variables](#set-environment-variables)
     1. [Run docker container](#run-docker-container)
 1. [Demonstrate using docker-compose](#demonstrate-using-docker-compose)
-    1. [Create directories for artifacts](#create-directories-for-artifacts)
+    1. [Download artifacts](#download-artifacts)
     1. [Prerequisite docker-compose stack](#prerequisite-docker-compose-stack)
     1. [Bring up docker-compose stack](#bring-up-docker-compose-stack)
 1. [Develop](#develop)
@@ -74,7 +74,7 @@ docker image demonstrates how to write a Flask app based on the
 
 ## Demonstrate using docker-compose
 
-### Create directories for artifacts
+### Download artifacts
 
 1. Specify a new directory to place artifacts in.
    Example:
@@ -96,9 +96,7 @@ docker image demonstrates how to write a Flask app based on the
     chmod -R 777 ${SENZING_VOLUME}
     ```
 
-### Prerequisite docker-compose stack
-
-1. Bring up a Docker Compose stack with backing services.
+1. Download artifacts.
    Example:
 
     ```console
@@ -106,6 +104,17 @@ docker image demonstrates how to write a Flask app based on the
       -O ${SENZING_VOLUME}/docker-compose-backing-services-only.yaml \
       "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/postgresql/docker-compose-rabbitmq-postgresql-backing-services-only.yaml"
 
+    wget \
+      -O ${SENZING_VOLUME}/docker-compose.yaml \
+      "https://raw.githubusercontent.com/Senzing/docker-python-demo/main/docker-compose.yaml"
+    ```
+
+### Prerequisite docker-compose stack
+
+1. Bring up a Docker Compose stack with backing services.
+   Example:
+
+    ```console
     docker-compose -f ${SENZING_VOLUME}/docker-compose-backing-services-only.yaml pull
     docker-compose -f ${SENZING_VOLUME}/docker-compose-backing-services-only.yaml up
     ```
@@ -113,13 +122,10 @@ docker image demonstrates how to write a Flask app based on the
 ### Bring up docker-compose stack
 
 1. Download `docker-compose.yaml` file and deploy stack.
+   *Note:* `SENZING_VOLUME` needs to be set.
    Example:
 
     ```console
-    wget \
-      -O ${SENZING_VOLUME}/docker-compose.yaml \
-      "https://raw.githubusercontent.com/Senzing/docker-python-demo/main/docker-compose.yaml"
-
     docker-compose -f ${SENZING_VOLUME}/docker-compose.yaml pull
     docker-compose -f ${SENZING_VOLUME}/docker-compose.yaml up
     ```
