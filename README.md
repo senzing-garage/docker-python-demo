@@ -1,13 +1,12 @@
 # docker-python-demo
 
+## Synopsis
+
+This [senzing/python-demo](https://hub.docker.com/r/senzing/python-demo)
+docker image demonstrates how to write a Flask app based on the
+[senzing/senzingapi-runtime](https://hub.docker.com/r/senzing/senzingapi-runtime) docker image.
+
 ## Overview
-
-This [senzing/python-demo](https://cloud.docker.com/u/senzing/repository/docker/senzing/python-demo)
-docker image demonstrates how to write an app based on the
-[senzing/senzing-base](https://github.com/Senzing/docker-senzing-base) docker image.
-
-To see a demonstration of this python demo in action, see
-[github.com/senzing/docker-compose-mysql-demo](https://github.com/senzing/docker-compose-mysql-demo).
 
 ### Related artifacts
 
@@ -16,17 +15,18 @@ To see a demonstration of this python demo in action, see
 ### Contents
 
 1. [Demonstrate using Docker](#demonstrate-using-docker)
-    1. [Configuration](#configuration)
-    1. [External database](#external-database)
-    1. [Database support](#database-support)
+    1. [Set environment variables](#set-environment-variables)
     1. [Run docker container](#run-docker-container)
 1. [Demonstrate using docker-compose](#demonstrate-using-docker-compose)
+    1. [Create directories for artifacts](#create-directories-for-artifacts)
     1. [Prerequisite docker-compose stack](#prerequisite-docker-compose-stack)
     1. [Bring up docker-compose stack](#bring-up-docker-compose-stack)
 1. [Develop](#develop)
     1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
     1. [Build docker image for development](#build-docker-image-for-development)
+1. [Advanced](#advanced)
+    1. [Configuration](#configuration)
 1. [Examples](#examples)
 1. [Errors](#errors)
 1. [References](#references)
@@ -39,7 +39,7 @@ To see a demonstration of this python demo in action, see
 1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
 1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
 
-## Expectations
+### Expectations
 
 - **Space:** This repository and demonstration require 6 GB free disk space.
 - **Time:** Budget 40 minutes to get the demonstration up-and-running, depending on CPU and network speeds.
@@ -48,48 +48,14 @@ To see a demonstration of this python demo in action, see
 
 ## Demonstrate using Docker
 
-### External database
+### Set environment variables
 
-:thinking: **Optional:**  Use if storing data in an external database.
-If not specified, the internal SQLite database will be used.
-
-1. :pencil2: Specify database.
+1. Construct Senzing SQL Connection.
    Example:
 
     ```console
-    export DATABASE_PROTOCOL=postgresql
-    export DATABASE_USERNAME=postgres
-    export DATABASE_PASSWORD=postgres
-    export DATABASE_HOST=senzing-postgresql
-    export DATABASE_PORT=5432
-    export DATABASE_DATABASE=G2
+    export SENZING_SQL_CONNECTION="postgresql://postgres:postgres@senzing-postgres:5432:G2/"
     ```
-
-1. Construct Database URL.
-   Example:
-
-    ```console
-    export SENZING_DATABASE_URL="${DATABASE_PROTOCOL}://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DATABASE}"
-    ```
-
-1. Construct parameter for `docker run`.
-   Example:
-
-    ```console
-    export SENZING_DATABASE_URL_PARAMETER="--env SENZING_DATABASE_URL=${SENZING_DATABASE_URL}"
-    ```
-
-### Database support
-
-:thinking: **Optional:**  Some database need additional support.
-For other databases, these steps may be skipped.
-
-1. **Db2:** See
-   [Support Db2](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/support-db2.md)
-   instructions to set `SENZING_OPT_IBM_DIR_PARAMETER`.
-1. **MS SQL:** See
-   [Support MS SQL](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/support-mssql.md)
-   instructions to set `SENZING_OPT_MICROSOFT_DIR_PARAMETER`.
 
 ### Run docker container
 
@@ -98,11 +64,11 @@ For other databases, these steps may be skipped.
 
     ```console
     sudo docker run \
+      --env SENZING_SQL_CONNECTION \
       --interactive \
       --publish 8356:5000 \
       --rm \
       --tty \
-      ${SENZING_DATABASE_URL_PARAMETER} \
       senzing/python-demo
     ```
 
@@ -130,7 +96,6 @@ For other databases, these steps may be skipped.
     export SENZING_GID=$(id -g)
     mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
     chmod -R 777 ${SENZING_VOLUME}
-
     ```
 
 ### Prerequisite docker-compose stack
@@ -139,12 +104,12 @@ For other databases, these steps may be skipped.
    Example:
 
     ```console
-    wget -O ${SENZING_VOLUME}/docker-compose-backing-services-only.yaml \
+    wget \
+      -O ${SENZING_VOLUME}/docker-compose-backing-services-only.yaml \
       "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/postgresql/docker-compose-rabbitmq-postgresql-backing-services-only.yaml"
 
     docker-compose -f ${SENZING_VOLUME}/docker-compose-backing-services-only.yaml pull
     docker-compose -f ${SENZING_VOLUME}/docker-compose-backing-services-only.yaml up
-
     ```
 
 ### Bring up docker-compose stack
@@ -153,7 +118,8 @@ For other databases, these steps may be skipped.
    Example:
 
     ```console
-    wget -O ${SENZING_VOLUME}/docker-compose.yaml \
+    wget \
+      -O ${SENZING_VOLUME}/docker-compose.yaml \
       "https://raw.githubusercontent.com/Senzing/docker-python-demo/main/docker-compose.yaml"
 
     docker-compose -f ${SENZING_VOLUME}/docker-compose.yaml pull
@@ -218,7 +184,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/main/
 
 Configuration values specified by environment variable or command line parameter.
 
-- **[SENZING_DATABASE_URL](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_database_url)**
 - **[SENZING_DEBUG](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_debug)**
 - **[SENZING_NETWORK](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_network)**
 - **[SENZING_RUNAS_USER](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_runas_user)**
