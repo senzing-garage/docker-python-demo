@@ -54,7 +54,7 @@ docker image demonstrates how to write a Flask app based on the
    Example:
 
     ```console
-    export SENZING_SQL_CONNECTION="postgresql://postgres:postgres@senzing-postgres:5432:G2/"
+    export SENZING_SQL_CONNECTION="postgresql://username:password@hostname:5432:G2/"
     ```
 
 ### Run docker container
