@@ -65,10 +65,8 @@ docker image demonstrates how to write a Flask app based on the
     ```console
     sudo docker run \
       --env SENZING_SQL_CONNECTION \
-      --interactive \
       --publish 8356:5000 \
       --rm \
-      --tty \
       senzing/python-demo
     ```
 
