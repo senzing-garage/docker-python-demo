@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=debian:11.5-slim@sha256:5cf1d98cd0805951484f33b34c1ab25aac7007bb41c8b9901d97e4be3cf3ab04
+ARG BASE_IMAGE=senzing/senzingapi-runtime:3.3.0
 
 # -----------------------------------------------------------------------------
 # Stage: Final
