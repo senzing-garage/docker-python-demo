@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=senzing/senzingapi-runtime:3.5.0
+ARG BASE_IMAGE=senzing/senzingapi-runtime:3.5.2
 
 # -----------------------------------------------------------------------------
 # Stage: Final
@@ -8,7 +8,7 @@ ARG BASE_IMAGE=senzing/senzingapi-runtime:3.5.0
 
 FROM ${BASE_IMAGE}
 
-ENV REFRESHED_AT=2023-04-03
+ENV REFRESHED_AT=2023-05-09
 
 LABEL Name="senzing/python-demo" \
       Maintainer="support@senzing.com" \
