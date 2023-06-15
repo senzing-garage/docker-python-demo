@@ -36,9 +36,9 @@ APP = Flask(__name__)
 # Metadata
 
 __all__ = []
-__version__ = "1.5.1"  # See https://www.python.org/dev/peps/pep-0396/
+__version__ = "1.5.3"  # See https://www.python.org/dev/peps/pep-0396/
 __date__ = '2018-10-29'
-__updated__ = '2022-09-29'
+__updated__ = '2023-06-15'
 
 # -----------------------------------------------------------------------------
 # Senzing configuration.

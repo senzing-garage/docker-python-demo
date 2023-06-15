@@ -12,7 +12,7 @@ ENV REFRESHED_AT=2023-06-15
 
 LABEL Name="senzing/python-demo" \
       Maintainer="support@senzing.com" \
-      Version="1.5.1"
+      Version="1.5.3"
 
 # Define health check.
 
