@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.4] - 2023-09-29
+
+### Changed in 1.5.4
+
+- In `Dockerfile`, updated FROM instruction to `senzing/senzingapi-runtime:3.7.1`
+- In `requirements.txt`, updated:
+  - Flask==2.3.3
 
 ## [1.5.3] - 2023-06-15
 
@@ -35,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Migrated to `senzing/senzingapi-runtime` as Docker base images
 
-### Added to 1.4.4
+### Added to 1.5.0
 
 ## [1.4.4] - 2022-03-22
 
