@@ -4,7 +4,7 @@ services:
   pythondemo:
     container_name: senzing-python-demo
     environment:
-#     See https://github.com/Senzing/docker-python-demo#configuration
+#     See https://github.com/senzing-garage/docker-python-demo#configuration
       SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
     image: senzing/python-demo:${SENZING_DOCKER_IMAGE_VERSION_PYTHON_DEMO:-latest}
     networks:
