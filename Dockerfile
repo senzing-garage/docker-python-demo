@@ -11,8 +11,8 @@ FROM ${BASE_IMAGE}
 ENV REFRESHED_AT=2024-05-22
 
 LABEL Name="senzing/python-demo" \
-      Maintainer="support@senzing.com" \
-      Version="1.5.4"
+  Maintainer="support@senzing.com" \
+  Version="1.5.5"
 
 # Define health check.
 
@@ -25,22 +25,22 @@ USER root
 # Install packages via apt.
 
 RUN apt-get update \
- && apt-get -y install \
-      libssl1.1 \
-      odbc-postgresql \
-      odbcinst \
-      python3-dev \
-      python3-pip \
-      sqlite3 \
-      unixodbc \
- && rm -rf /var/lib/apt/lists/*
+  && apt-get -y install \
+  libssl1.1 \
+  odbc-postgresql \
+  odbcinst \
+  python3-dev \
+  python3-pip \
+  sqlite3 \
+  unixodbc \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install packages via PIP.
 
 COPY requirements.txt .
 RUN pip3 install --upgrade pip \
- && pip3 install -r requirements.txt \
- && rm /requirements.txt
+  && pip3 install -r requirements.txt \
+  && rm /requirements.txt
 
 # Copy files from repository.
 
