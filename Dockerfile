@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=senzing/senzingapi-runtime:3.10.1
+ARG BASE_IMAGE=senzing/senzingapi-runtime:3.10.3
 
 # -----------------------------------------------------------------------------
 # Stage: Final
@@ -8,11 +8,11 @@ ARG BASE_IMAGE=senzing/senzingapi-runtime:3.10.1
 
 FROM ${BASE_IMAGE}
 
-ENV REFRESHED_AT=2024-05-22
+ENV REFRESHED_AT=2024-06-24
 
 LABEL Name="senzing/python-demo" \
   Maintainer="support@senzing.com" \
-  Version="1.5.5"
+  Version="1.5.6"
 
 # Define health check.
 
