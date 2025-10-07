@@ -25,7 +25,7 @@ USER root
 # Install packages via apt.
 
 RUN apt-get update \
-  && apt-get -y install \
+  && apt-get -y --no-install-recommends install \
   libssl1.1 \
   odbc-postgresql \
   odbcinst \
