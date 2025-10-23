@@ -8,11 +8,11 @@ ARG BASE_IMAGE=senzing/senzingapi-runtime:3.13.0@sha256:edca155d3601238fab622a7d
 
 FROM ${BASE_IMAGE}
 
-ENV REFRESHED_AT=2024-06-24
+ENV REFRESHED_AT=2025-10-22
 
 LABEL Name="senzing/python-demo" \
-  Maintainer="support@senzing.com" \
-  Version="1.5.6"
+      Maintainer="support@senzing.com" \
+      Version="1.5.6"
 
 # Define health check.
 
@@ -25,22 +25,22 @@ USER root
 # Install packages via apt.
 
 RUN apt-get update \
-  && apt-get -y --no-install-recommends install \
-  libssl1.1 \
-  odbc-postgresql \
-  odbcinst \
-  python3-dev \
-  python3-pip \
-  sqlite3 \
-  unixodbc \
-  && rm -rf /var/lib/apt/lists/*
+ && apt-get -y --no-install-recommends install \
+      libssl3 \
+      odbc-postgresql \
+      odbcinst \
+      python3-dev \
+      python3-pip \
+      sqlite3 \
+      unixodbc \
+ && rm -rf /var/lib/apt/lists/*
 
 # Install packages via PIP.
 
 COPY requirements.txt .
 RUN pip3 install --upgrade pip \
-  && pip3 install -r requirements.txt \
-  && rm /requirements.txt
+ && pip3 install -r requirements.txt \
+ && rm /requirements.txt
 
 # Copy files from repository.
 
